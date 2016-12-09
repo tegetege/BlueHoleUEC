@@ -1,8 +1,6 @@
 #!/usr/bin/env python
 #　coding: utf-8
 
-# 小俣のコメント（あとで削除してください）
-#テストコメント(とうせ)
 
 #tnlabのpcにて
 #python のバージョン指定：anaconda3-2.5.0
@@ -101,5 +99,3 @@ else:
 
 
 print (data)
-
-#テストコメントその２(とうせ)
