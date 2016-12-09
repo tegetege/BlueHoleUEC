@@ -1,3 +1,4 @@
+# coding:utf-8
 #IBM Watson　API　のNLCを呼び出す
 
 from watson_developer_cloud import NaturalLanguageClassifierV1
