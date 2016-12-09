@@ -1,0 +1,60 @@
+#python3でMeCabを動かし名詞抽出を行うモジュール
+#coding:utf-8
+
+import sys
+import MeCab
+
+
+def mecab_general_noun_get(text):
+        #一般(固有)名詞の獲得
+        #MeCab
+        mThings = MeCab.Tagger('-d /usr/local/lib/mecab/dic/mecab-ipadic-neologd')
+        node = mThings.parseToNode(text)
+        #エラー回避のためにリストにnullを入れておく
+        keywords = ['null']
+        while node:
+            if node.feature.split(',')[0] == '名詞':
+                if node.feature.split(',')[1] != '代名詞':
+                    keywords.insert(0,node.surface)
+            node = node.next
+        print('-----------------')
+        print("一般名詞を抽出しました、イベントカテゴリーにはどの名詞を採用しますか？(1~の番号を入力)")
+        print(keywords)
+        
+        num = int(input("input : "))
+        num = num - 1
+        return keywords[num]
+
+def mecab_where_get(text):
+        #一般(固有)名詞の獲得
+        #MeCab
+        mThings = MeCab.Tagger('-d /usr/local/lib/mecab/dic/mecab-ipadic-neologd')
+        node = mThings.parseToNode(text)
+        #エラー回避のためにリストにnullを入れておく
+        keywords = ['null']
+        while node:
+            if node.feature.split(',')[0] == '名詞':
+                if node.feature.split(',')[1] != '代名詞':
+                    keywords.insert(0,node.surface)
+            node = node.next
+        print('-----------------')
+        print("一般名詞を抽出しました、場所カテゴリーにはどの名詞を採用しますか？(1~の番号を入力)")
+        print(keywords)
+        
+        num = int(input("input : "))
+        num = num - 1
+        return keywords[num]
+
+
+def mecab_name_get(text):
+        #人名を獲得
+        ###MeCab
+        mThings = MeCab.Tagger('-d /usr/local/lib/mecab/dic/mecab-ipadic-neologd')
+        node = mThings.parseToNode(text)
+        #エラー回避のためにリストにnullを入れておく
+        keywords = ['null']
+        while node:
+            if node.feature.split(',')[2] == '人名':
+                keywords.insert(0,node.surface)
+            node = node.next
+        return keywords
