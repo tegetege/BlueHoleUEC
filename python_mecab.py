@@ -1,6 +1,9 @@
 # coding:utf-8
 #python3でMeCabを動かし名詞抽出を行うモジュール
 #(注意!)辞書(mecab-ipadic-neologd)を指定
+#(条件)MeCabをpythonから利用することができる
+#MeCabの最新辞書(mecab-ipadic-neologd)がインストールされていること。
+
 
 
 import sys
