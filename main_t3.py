@@ -14,10 +14,21 @@ import datetime
 import python_mecab
 import get_nlc
 import get_day
+import record
 
 
 #　入力
 st = input('Input: ')
+
+
+#履歴の作成
+record_user=[]
+record_user.append(st)
+#履歴の表示
+record_print = re.search('履歴の表示',st)
+if record_print :
+	print(record_user)
+
 #データを格納する辞書の作成
 data ={'category' :'null',
 	   'what'     :'null',
@@ -58,15 +69,6 @@ if t != None:
 #ユーザー発話から日付情報を獲得してくる
 data['when_day'] =  get_day.get_day(st)
 
-
-
-#履歴の作成
-record_user=[]
-record_user.append(st)
-#履歴の表示
-record_print = re.search('履歴の表示',st)
-if record_print :
-	print(record_user)
 
 
 '''

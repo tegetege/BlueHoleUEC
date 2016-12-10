@@ -1,6 +1,8 @@
 # coding:utf-8
 #IBM Watson　API　のNLCを呼び出す
 
+#python のバージョン指定：python 3.5.0
+
 from watson_developer_cloud import NaturalLanguageClassifierV1
 from watson_developer_cloud import NaturalLanguageClassifierV1 as NaturalLanguageClassifier
 
