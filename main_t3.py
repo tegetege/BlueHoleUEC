@@ -1,8 +1,8 @@
 # coding: utf-8
 #!/usr/bin/env python
 
-#tnlabのpcにて
 #python のバージョン指定：python 3.5.0
+#(条件)MeCabをpythonから利用することができる
 
 import json
 import sys
