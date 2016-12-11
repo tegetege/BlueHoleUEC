@@ -4,6 +4,7 @@
 #(条件)MeCabをpythonから利用することができる
 #MeCabの最新辞書(mecab-ipadic-neologd)がインストールされていること。
 
+#python のバージョン指定：python 3.5.0
 
 
 import sys
