@@ -4,6 +4,12 @@
 #python のバージョン指定：python 3.5.0
 #(条件)MeCabをpythonから利用することができる
 
+'''
+追加学習が必要な質問集
+・今夜8時に始まるイベントは何ですか？
+
+'''
+
 import json
 import sys
 import codecs
@@ -21,13 +27,22 @@ import record
 st = input('Input: ')
 
 
-#履歴の作成
-record_user=[]
-record_user.append(st)
 #履歴の表示
-record_print = re.search('履歴の表示',st)
-if record_print :
-	print(record_user)
+#"input:"に[履歴]が入力されたら、即履歴を表示して終了
+#最後の「履歴」が追加でcsvファイルに書き込まれないように
+#この位置指定!!
+get_record = re.search('履歴', st)
+if get_record :
+	dataReader = record.record_read()
+	for row in dataReader:
+		print(row)
+	sys.exit()
+
+
+#履歴(ユーザー)の作成
+#引数'u'はユーザー入力を示す
+record.record_make(st,'u')
+
 
 #データを格納する辞書の作成
 data ={'category' :'null',
@@ -45,10 +60,11 @@ category ='カテゴリー: '
 print( category + category_ans)
 data['category']=category_ans
 
-#python_mecab.pyのmecab関数を利用
-#一般(固有)名詞の取得
-mecab_noun = python_mecab.mecab_general_noun_get(st)
-data['what']=mecab_noun
+if category_ans != 'what':
+	#python_mecab.pyのmecab関数を利用
+	#一般(固有)名詞の取得
+	mecab_noun = python_mecab.mecab_general_noun_get(st)
+	data['what']=mecab_noun
 
 if category_ans != 'where':
 	#場所名詞の取得
@@ -92,6 +108,5 @@ else:
 	print('category is why')
 '''
 
-
+#とりあえずの結果表示
 print (data)
-
