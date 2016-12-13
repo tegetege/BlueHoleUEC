@@ -33,15 +33,18 @@ st = input('Input: ')
 #この位置指定!!
 get_record = re.search('履歴', st)
 if get_record :
-	dataReader = record.record_read()
-	for row in dataReader:
+	dataReader_user = record.record_user_read()
+	for row in dataReader_user:
+		print(row)
+	dataReader_sys  = record.record_sys_read()
+	for row in dataReader_sys:
 		print(row)
 	sys.exit()
 
 
 #履歴(ユーザー)の作成
 #引数'u'はユーザー入力を示す
-record.record_make(st,'u')
+record.record_make_user(st,'u')
 
 
 #データを格納する辞書の作成
