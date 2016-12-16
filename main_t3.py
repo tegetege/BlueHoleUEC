@@ -12,15 +12,16 @@
 
 import json
 import sys
+import os
 import codecs
 import MeCab
 import re
 import datetime
 #----外ファイルインポート----
-import t3.python_mecab as python_mecab
-import t3.get_nlc as get_nlc
-import t3.get_day as get_day
-import t3.record as record
+import python_mecab
+import get_nlc 
+import get_day 
+import record
 from k3.main import K3
 
 
@@ -98,6 +99,8 @@ data['when_day'] =  get_day.get_day(st)
 k3 = K3()
 k3.set_params(data)
 
+#動作確認のため、便宜上取り入れた辞書タプル。
+#本来は情報検索部から解答タプルを得る。
 ans  ={'category' :'where',
 	   'what'     :'講演会',
 	   'where'    :'東3-501',
