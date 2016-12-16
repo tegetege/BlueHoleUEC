@@ -17,15 +17,16 @@ import MeCab
 import re
 import datetime
 #----外ファイルインポート----
-import python_mecab
-import get_nlc
-import get_day
-import record
+import t3.python_mecab as python_mecab
+import t3.get_nlc as get_nlc
+import t3.get_day as get_day
+import t3.record as record
+from k3.main import K3
 
 
 #　入力
 st = input('Input: ')
-
+#st = "明日の西野先生の講演会はどこで行われますか？"
 
 #履歴の表示
 #"input:"に[履歴]が入力されたら、即履歴を表示して終了
@@ -87,26 +88,46 @@ data['when_day'] =  get_day.get_day(st)
 
 
 
-'''
+#とりあえずの結果表示
+#print (data)
+
+#情報検索部に抽出した情報を受け渡す。
+k3 = K3()
+k3.set_params(data)
+
+ans  ={'category' :'where',
+	   'what'     :'講演会',
+	   'where'    :'東3-501',
+	   'who'      :'西野教授',
+	   'when_time':'13',
+	   'when_day' :'17',
+	   'how'      :'3時間'}
+
 if category_ans == 'what':
 	print('category is what')
+	ans_what =  ans['what']
+	print(ans_what + 'です。')
 
 elif category_ans == 'when':
 	print('category is when')
+	ans_when_day =  ans['when_day']
+	ans_when_time = ans['when_time']
+	print(ans_when_day + '日の' + ans_when_time + '時です。')
 
 elif category_ans == 'who':
 	print('category is who')
+	ans_who =  ans['who']
+	print(ans_who + 'です。')
 
 elif category_ans == 'where':
 	print('category is where')
-
+	ans_where =  ans['where']
+	print('場所は'+ ans_where + 'です。')
 
 elif category_ans == 'how':
 	print('category is how')
+	ans_how =  ans['how']
 
 else:
 	print('category is why')
-'''
-
-#とりあえずの結果表示
-print (data)
+	print('スタッフの方に引き継ぎます。')
