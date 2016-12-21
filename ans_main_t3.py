@@ -15,15 +15,16 @@ import get_day
 import record
 from k3.main import K3
 
+#回答が一意に決まる時の応答
 def one_ans(category_ans):
 
 	print('回答候補が一つ見つかりました。')
 	#動作確認のため、便宜上取り入れた辞書タプル。
 	#本来は情報検索部から解答タプルを得る。
 	ans  ={'category' :'where',
-		   'what'     :'講演会',
+		   'what'     :'これからの電通生に必要な知識とマナーとは',
 		   'where'    :'東3-501',
-		   'who'      :'西野教授',
+		   'who'      :'山田教授',
 		   'when_time':'13',
 		   'when_day' :'17',
 		   'how'      :'3時間'}
@@ -58,21 +59,22 @@ def one_ans(category_ans):
 		print('スタッフの方に引き継ぎます。')
 
 
-
+#回答が複数候補としてあげられる場合の応答
+#複数の回答候補を辞書タプル形式で受け取ることを想定
 def some_ans(category_ans):
 	print('いくつかの回答候補が見つかりました。')
 	#動作確認のため、便宜上取り入れた辞書タプル。
 	#本来は情報検索部から解答タプルを得る。
 	ans0  ={'category' :'where',
-		   'what'      :'講演会',
+		   'what'      :'これからの電通生に必要な知識とマナーとは',
 		   'where'     :'東3-501',
-		   'who'       :'西野教授',
+		   'who'       :'山田教授',
 		   'when_time' :'13',
 		   'when_day'  :'17',
 		   'how'       :'3時間'}
 
 	ans1  ={'category' :'where',
-		   'what'      :'講演会',
+		   'what'      :'電通大と調布通りの関係',
 		   'where'     :'講堂',
 		   'who'       :'高木教授',
 		   'when_time' :'13',
@@ -80,7 +82,7 @@ def some_ans(category_ans):
 		   'how'       :'1時間30分'}
 
 	ans2  ={'category' :'where',
-		   'what'      :'講演会',
+		   'what'      :'西友とパルコでの上手なお買物法',
 		   'where'     :'東5-202',
 		   'who'       :'野田教授',
 		   'when_time' :'13',

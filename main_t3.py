@@ -100,6 +100,12 @@ data['when_day'] =  get_day.get_day(st)
 k3 = K3()
 k3.set_params(data)
 
-ans_main_t3.one_ans(category_ans)
+print('------ 回答候補の数を入力してください。------')
+ans_count = input('Input: ')
 
-ans_main_t3.some_ans(category_ans)
+if int(ans_count)  == 1:
+	ans_main_t3.one_ans(category_ans)
+elif int(ans_count) < 5:
+	ans_main_t3.some_ans(category_ans)
+else:
+	print('大量の回答候補が見つかりました。追加質問を生成します。')
