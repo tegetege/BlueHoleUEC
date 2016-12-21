@@ -22,6 +22,7 @@ import python_mecab
 import get_nlc 
 import get_day 
 import record
+import ans_main_t3
 from k3.main import K3
 
 
@@ -99,41 +100,6 @@ data['when_day'] =  get_day.get_day(st)
 k3 = K3()
 k3.set_params(data)
 
-#動作確認のため、便宜上取り入れた辞書タプル。
-#本来は情報検索部から解答タプルを得る。
-ans  ={'category' :'where',
-	   'what'     :'講演会',
-	   'where'    :'東3-501',
-	   'who'      :'西野教授',
-	   'when_time':'13',
-	   'when_day' :'17',
-	   'how'      :'3時間'}
+ans_main_t3.one_ans(category_ans)
 
-if category_ans == 'what':
-	print('category is what')
-	ans_what =  ans['what']
-	print(ans_what + 'です。')
-
-elif category_ans == 'when':
-	print('category is when')
-	ans_when_day =  ans['when_day']
-	ans_when_time = ans['when_time']
-	print(ans_when_day + '日の' + ans_when_time + '時です。')
-
-elif category_ans == 'who':
-	print('category is who')
-	ans_who =  ans['who']
-	print(ans_who + 'です。')
-
-elif category_ans == 'where':
-	print('category is where')
-	ans_where =  ans['where']
-	print('場所は'+ ans_where + 'です。')
-
-elif category_ans == 'how':
-	print('category is how')
-	ans_how =  ans['how']
-
-else:
-	print('category is why')
-	print('スタッフの方に引き継ぎます。')
+ans_main_t3.some_ans(category_ans)
