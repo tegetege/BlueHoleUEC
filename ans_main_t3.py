@@ -15,6 +15,7 @@ import get_day
 import record
 from k3.main import K3
 
+#回答候補が一つの場合の応答
 def one_ans(category_ans):
 
 	print('回答候補が一つ見つかりました。')
@@ -58,13 +59,13 @@ def one_ans(category_ans):
 		print('スタッフの方に引き継ぎます。')
 
 
-
+#回答候補が複数の時の応答
 def some_ans(category_ans):
 	print('いくつかの回答候補が見つかりました。')
 	#動作確認のため、便宜上取り入れた辞書タプル。
 	#本来は情報検索部から解答タプルを得る。
 	ans0  ={'category' :'where',
-		   'what'      :'講演会',
+		   'what'      :'これからの電通生に必要な知識とマナーとは',
 		   'where'     :'東3-501',
 		   'who'       :'西野教授',
 		   'when_time' :'13',
@@ -72,7 +73,7 @@ def some_ans(category_ans):
 		   'how'       :'3時間'}
 
 	ans1  ={'category' :'where',
-		   'what'      :'講演会',
+		   'what'      :'電通大と電通通りの関係',
 		   'where'     :'講堂',
 		   'who'       :'高木教授',
 		   'when_time' :'13',
@@ -80,7 +81,7 @@ def some_ans(category_ans):
 		   'how'       :'1時間30分'}
 
 	ans2  ={'category' :'where',
-		   'what'      :'講演会',
+		   'what'      :'西友とパルコでの上手な買い物の仕方',
 		   'where'     :'東5-202',
 		   'who'       :'野田教授',
 		   'when_time' :'13',
