@@ -4,7 +4,7 @@
 brew update
 brew install mysql
 unset TMPDIR
-mysql_install_db --verbose --user=`whoami` --basedir="$(brew --prefix mysql)" --datadir=/usr/local/var/mysql --tmpdir=/tmp
+mysql_install_db --verbose --user=`whoami` --basedir="$(brew --prefix mysql)" --datadir=/usr/local/var/mysql
  # 起動時に MySQL を立ち上げる。
 ln -sfv /usr/local/opt/mysql/*.plist ~/Library/LaunchAgents 
 launchctl load -w ~/Library/LaunchAgents/homebrew.mxcl.mysql.plist
@@ -34,23 +34,51 @@ K3をソースコードで使用する
 from k3.main import K3
 
 # k3の読み込み
-k3 = K3();
+k3 = K3()
 
 # 検索要求の受け渡し
-k3.set_params(data);
+k3.set_params(data)
+
+# 検索実行
+result = k3.search()
 
 """
 
-import sqlalchemy
+from pprint import pprint
+from sqlalchemy import (
+    create_engine
+)
+from sqlalchemy.orm import sessionmaker
+from sqlalchemy.ext.declarative import declarative_base
+Base = declarative_base()
+
+from k3.models.knowledge import Knowledge
 
 class K3:
+  
+  MODE_STR = {
+    'and': 0,
+    'or': 1
+  }
 
   def __init__(self, debug = False):
     self.debug = (debug == True)
     
-    url = 'mysql+pymysql://k3:@localhost/k3?charset=utf8'
-    self.engine = sqlalchemy.create_engine(url, echo=True)
+    self.engine = create_engine('mysql+pymysql://k3:k3_password@localhost/k3?charset=utf8', echo=True)
+    Session = sessionmaker(bind=self.engine)
+    self.session = Session()
     
+    self.mode = self.MODE_STR['and']
+
+    self.params = {
+      'what': None,
+      'when_time': None,
+      'when_day': None,
+      'who': None,
+      'how': None,
+      'where': None
+    }
+
   """
   params = {
     'what': 'null',
@@ -64,15 +92,75 @@ class K3:
   形式が違えば例外（TypeError,ValueError）を投げるので例外処理してください
   """
   def set_params(self, params):
+#    params = {
+#      'what': 'null',
+#      'when_time': 'null',
+#      'when_day': None,
+#      'who': 'null',
+#      'how': 'null',
+#      'where': '講堂',
+#      'category': 'what'
+#    }
     if not isinstance(params, dict): raise TypeError('不正な引数')
-    if 'what' not in params: raise ValueError('whatが存在しません')
-    if 'when_time' not in params: raise ValueError('when_timeが存在しません')
-    if 'when_day' not in params: raise ValueError('when_dayが存在しません')
-    if 'who' not in params: raise ValueError('whoが存在しません')
-    if 'how' not in params: raise ValueError('howが存在しません')
-    if 'where' not in params: raise ValueError('whereが存在しません')
-    if 'category' not in params: raise ValueError('categoryが存在しません')
+
+    for key in self.params.keys():
+      if key == 'category': continue
+      pprint(key)
+      if key in params:
+        self.params[key] = params[key]
+      else:
+        raise ValueError('%sが存在しません' % key)
+
+
+  def __generate_query(self):
+    query = self.session.query(Knowledge)
     
-    self.params = params
+    pprint(self.params)
+
+    if self.mode == self.MODE_STR['and']: # AND検索
+      for key in self.params.keys():
+        print('AND')
+        if self.params[key] and self.params[key] != 'null':
+          query = query.filter(getattr(Knowledge, key) == self.params[key])
+    elif self.mode == self.MODE_STR['or']: # OR検索
+      or_str = (Knowledge.id == '')
+      for key in self.params.keys():
+        print('OR')
+        if self.params[key] and self.params[key] != 'null':
+          or_str |= getattr(Knowledge, key) == self.params[key]
+      query = query.filter(or_str)
+
+  
+    return query
+
+
+  def to_dict(self, result):
+    return list(map(lambda n:n.to_dict(), result)) # 結果を辞書に変換
+
+  """
+  辞書形式の情報を要素とするリストを返します。
+  何も結果がなければ空のリストを返します。
+  [{'created_at': None,
+  'how': '1時間',
+  'id': 3,
+  'title': '説明会',
+  'updated_at': None,
+  'what': '説明会',
+  'when_day': '17',
+  'when_time': '11',
+  'where': '講堂',
+  'who': '教務課'}]
+  """
+  def search(self):
+    query = self.__generate_query()
+    result = self.to_dict(query.all())
     
-        
+    if len(result) == 0:
+      self.mode = self.MODE_STR['or']
+      query = self.__generate_query()
+      result = self.to_dict(query.all())
+    
+#    pprint(self.params)
+    pprint(result)
+    return result
+
