@@ -99,6 +99,7 @@ data['when_day'] =  get_day.get_day(st)
 #情報検索部に抽出した情報を受け渡す。
 k3 = K3()
 k3.set_params(data)
+result = k3.search()
 
 print('------ 回答候補の数を入力してください。------')
 ans_count = input('Input: ')
