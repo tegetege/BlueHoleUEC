@@ -27,7 +27,7 @@ def one_ans(category_ans):
 		   'who'      :'西野教授',
 		   'when_time':'13',
 		   'when_day' :'17',
-		   'how'      :'3時間'}
+		   'how_time' :'3時間'}
 
 	if category_ans == 'what':
 		print('category is what')
@@ -50,12 +50,12 @@ def one_ans(category_ans):
 		ans_where =  ans['where']
 		print('場所は'+ ans_where + 'です。')
 
-	elif category_ans == 'how':
-		print('category is how')
-		ans_how =  ans['how']
+	elif category_ans == 'how_time':
+		print('category is how_time')
+		ans_how =  ans['how_time']
 
 	else:
-		print('category is why')
+		print('category is why or how')
 		print('スタッフの方に引き継ぎます。')
 
 
@@ -70,15 +70,15 @@ def some_ans(category_ans):
 		   'who'       :'西野教授',
 		   'when_time' :'13',
 		   'when_day'  :'17',
-		   'how'       :'3時間'}
+		   'how_time'       :'3時間'}
 
 	ans1  ={'category' :'where',
-		   'what'      :'電通大と電通通りの関係',
+		   'what'      :'電通大と電通通りの関係について',
 		   'where'     :'講堂',
 		   'who'       :'高木教授',
 		   'when_time' :'13',
 		   'when_day'  :'17',
-		   'how'       :'1時間30分'}
+		   'how_time'       :'1時間30分'}
 
 	ans2  ={'category' :'where',
 		   'what'      :'西友とパルコでの上手な買い物の仕方',
@@ -86,7 +86,7 @@ def some_ans(category_ans):
 		   'who'       :'野田教授',
 		   'when_time' :'13',
 		   'when_day'  :'17',
-		   'how'       :'2時間'}
+		   'how_time'       :'2時間'}
 
 	anser = [ans0,ans1,ans2]
 
@@ -115,12 +115,12 @@ def some_ans(category_ans):
 			ans_where = anser['where']
 			print(ans_where + 'で行われるイベントが候補として挙がっています。')
 
-	elif category_ans == 'how':
-		print('category is how')
+	elif category_ans == 'how_time':
+		print('category is how_time')
 		for anser in anser:
-			print(anser['how'])
+			print(anser['how_time'])
 
 	else:
-		print('category is why')
+		print('category is why or how')
 		print('スタッフの方に引き継ぎます。')
 

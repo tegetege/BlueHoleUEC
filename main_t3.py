@@ -4,11 +4,7 @@
 #python のバージョン指定：python 3.5.0
 #(条件)MeCabをpythonから利用することができる
 
-'''
-追加学習が必要な質問集
-・今夜8時に始まるイベントは何ですか？
 
-'''
 
 import json
 import sys
@@ -23,6 +19,7 @@ import get_nlc
 import get_day 
 import record
 import ans_main_t3
+import add_q_main
 from k3.main import K3
 
 
@@ -57,7 +54,7 @@ data ={'category' :'null',
 	   'who'      :'null',
 	   'when_time':'null',
 	   'when_day' :'null',
-	   'how'      :'null'}
+	   'how_time' :'null'}
 
 
 #　get_nlcからカテゴリータグの取得
