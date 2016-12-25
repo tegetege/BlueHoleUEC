@@ -75,7 +75,7 @@ class K3:
       'when_time': None,
       'when_day': None,
       'who': None,
-      'how': None,
+      'how_time': None,
       'where': None
     }
 
