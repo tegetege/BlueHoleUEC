@@ -15,17 +15,23 @@ def make_q(category_ans):
 	if key == 'what':
 		print('Key is "what"')
 		print('イベント名はご存知ですか？')
+		#　入力
+		key = input('Input: ')
 
 	elif category_ans == 'when':
 		print('Key is "when"')
 		print('イベントは何時から始まるかご存知ですか？')
-
+		#　入力
+		key = input('Input: ')
 
 	elif category_ans == 'who':
 		print('Key is "who"')
 		print('どなたがご出演かご存知ですか？')
+		#　入力
+		key = input('Input: ')
 
 	elif category_ans == 'where':
 		print('どこで行われるかご存知ですか？')
-
+		#　入力
+		key = input('Input: ')
 
