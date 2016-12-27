@@ -104,7 +104,7 @@ ans_count = len(result)
 
 if int(ans_count)  == 1:
 	ans_main_t3.one_ans(category_ans,result)
-elif int(ans_count) < 5:
+elif int(ans_count) <= 5:
 	ans_main_t3.some_ans(category_ans,result)
 else:
 	print('大量の回答候補が見つかりました。追加質問を生成します。')
