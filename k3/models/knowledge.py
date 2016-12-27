@@ -22,7 +22,7 @@ class Knowledge(Base):
   when_time = Column(VARCHAR(length=255))
   when_day = Column(VARCHAR(length=255))
   who = Column(VARCHAR(length=255))
-  how = Column(VARCHAR(length=255))
+  how_time = Column(VARCHAR(length=255))
   where = Column(VARCHAR(length=255))
   created_at = Column(VARCHAR(length=50))
   updated_at = Column(VARCHAR(length=50))
@@ -37,7 +37,7 @@ class Knowledge(Base):
       'when_time': self.when_time,
       'when_day': self.when_day,
       'who': self.who,
-      'how': self.how,
+      'how_time': self.how_time,
       'where': self.where,
       'created_at': self.created_at,
       'updated_at': self.updated_at,

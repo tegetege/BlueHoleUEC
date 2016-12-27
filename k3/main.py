@@ -69,6 +69,7 @@ class K3:
     self.session = Session()
     
     self.mode = self.MODE_STR['and']
+    self.category = 'what'
 
     self.params = {
       'what': None,
@@ -85,7 +86,7 @@ class K3:
     'when_time': 'null',
     'when_day': None,
     'who': 'null',
-    'how': 'null',
+    'how_time': 'null',
     'where': '講堂',
     'category': 'what'
   }
@@ -97,7 +98,7 @@ class K3:
 #      'when_time': 'null',
 #      'when_day': None,
 #      'who': 'null',
-#      'how': 'null',
+#      'how_time': 'null',
 #      'where': '講堂',
 #      'category': 'what'
 #    }
@@ -110,6 +111,9 @@ class K3:
         self.params[key] = params[key]
       else:
         raise ValueError('%sが存在しません' % key)
+      
+    
+    self.category = params['category']
 
 
   def __generate_query(self):
@@ -141,7 +145,7 @@ class K3:
   辞書形式の情報を要素とするリストを返します。
   何も結果がなければ空のリストを返します。
   [{'created_at': None,
-  'how': '1時間',
+  'how_time': '1時間',
   'id': 3,
   'title': '説明会',
   'updated_at': None,
@@ -153,12 +157,23 @@ class K3:
   """
   def search(self):
     query = self.__generate_query()
-    result = self.to_dict(query.all())
+    try:
+      result = self.to_dict(query.all())
+    except:
+      raise Exception('データベースに接続できません' % key)
     
     if len(result) == 0:
       self.mode = self.MODE_STR['or']
       query = self.__generate_query()
       result = self.to_dict(query.all())
+      
+#    return_hash = {
+#      'answer': [],
+#      'data': result
+#    }
+#    for value in result:
+#      pprint(value)
+#      return_hash['answer'].append(value[str(self.category)])
     
 #    pprint(self.params)
     pprint(result)
