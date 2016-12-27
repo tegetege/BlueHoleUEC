@@ -15,6 +15,7 @@ def mecab_general_noun_get(text):
         #一般(固有)名詞の獲得
         #MeCab
         mThings = MeCab.Tagger('-d /usr/local/lib/mecab/dic/mecab-ipadic-neologd')
+        mThings.parse('')
         node = mThings.parseToNode(text)
         #エラー回避のためにリストにnullを入れておく
         keywords = ['null']
