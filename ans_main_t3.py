@@ -19,6 +19,7 @@ from k3.main import K3
 def one_ans(category_ans):
 
 	print('回答候補が一つ見つかりました。')
+	'''
 	#動作確認のため、便宜上取り入れた辞書タプル。
 	#本来は情報検索部から解答タプルを得る。
 	ans  ={'category' :'where',
@@ -28,6 +29,7 @@ def one_ans(category_ans):
 		   'when_time':'13',
 		   'when_day' :'17',
 		   'how_time' :'3時間'}
+	'''
 
 	if category_ans == 'what':
 		print('category is what')

@@ -63,14 +63,16 @@ category ='カテゴリー: '
 print( category + category_ans)
 data['category']=category_ans
 
+
+#一般(固有)名詞の取得
 if category_ans != 'what':
 	#python_mecab.pyのmecab関数を利用
-	#一般(固有)名詞の取得
 	mecab_noun = python_mecab.mecab_general_noun_get(st)
 	data['what']=mecab_noun
 
+
+#場所名詞の取得
 if category_ans != 'where':
-	#場所名詞の取得
 	mecab_where = python_mecab.mecab_where_get(st)
 	data['where']=mecab_where
 
@@ -91,19 +93,22 @@ data['when_day'] =  get_day.get_day(st)
 
 
 #とりあえずの結果表示
-#print (data)
+print (data)
 
 #情報検索部に抽出した情報を受け渡す。
 k3 = K3()
 k3.set_params(data)
 result = k3.search()
 
-print('------ 回答候補の数を入力してください。------')
-ans_count = input('Input: ')
+
+
+ans_count = len(result)
 
 if int(ans_count)  == 1:
-	ans_main_t3.one_ans(category_ans)
-elif int(ans_count) < 5:
-	ans_main_t3.some_ans(category_ans)
+	ans_main_t3.one_ans(category_ans,result)
+elif int(ans_count) <= 5:
+	ans_main_t3.some_ans(category_ans,result)
 else:
 	print('大量の回答候補が見つかりました。追加質問を生成します。')
+	key = 'when'
+	data[key] = add_q_main.make_q(key)
