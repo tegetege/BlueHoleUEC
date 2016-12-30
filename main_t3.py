@@ -63,14 +63,16 @@ category ='カテゴリー: '
 print( category + category_ans)
 data['category']=category_ans
 
+
+#一般(固有)名詞の取得
 if category_ans != 'what':
 	#python_mecab.pyのmecab関数を利用
-	#一般(固有)名詞の取得
 	mecab_noun = python_mecab.mecab_general_noun_get(st)
 	data['what']=mecab_noun
 
+
+#場所名詞の取得
 if category_ans != 'where':
-	#場所名詞の取得
 	mecab_where = python_mecab.mecab_where_get(st)
 	data['where']=mecab_where
 
@@ -108,5 +110,5 @@ elif int(ans_count) <= 5:
 	ans_main_t3.some_ans(category_ans,result)
 else:
 	print('大量の回答候補が見つかりました。追加質問を生成します。')
-	key = 'where'
-	add_q_main.make_q(key)
+	key = 'when'
+	data[key] = add_q_main.make_q(key)
