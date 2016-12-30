@@ -16,7 +16,7 @@ import record
 from k3.main import K3
 
 #回答候補が一つの場合の応答
-def one_ans(category_ans):
+def one_ans(category_ans,result):
 
 	print('回答候補が一つ見つかりました。')
 	'''
@@ -33,28 +33,28 @@ def one_ans(category_ans):
 
 	if category_ans == 'what':
 		print('category is what')
-		ans_what =  ans['what']
+		ans_what =  result['what']
 		print(ans_what + 'です。')
 
 	elif category_ans == 'when':
 		print('category is when')
-		ans_when_day =  ans['when_day']
-		ans_when_time = ans['when_time']
+		ans_when_day =  result['when_day']
+		ans_when_time = result['when_time']
 		print(ans_when_day + '日の' + ans_when_time + '時です。')
 
 	elif category_ans == 'who':
 		print('category is who')
-		ans_who =  ans['who']
+		ans_who =  result['who']
 		print(ans_who + 'です。')
 
 	elif category_ans == 'where':
 		print('category is where')
-		ans_where =  ans['where']
+		ans_where =  result['where']
 		print('場所は'+ ans_where + 'です。')
 
 	elif category_ans == 'how_time':
 		print('category is how_time')
-		ans_how =  ans['how_time']
+		ans_how =  result['how_time']
 
 	else:
 		print('category is why or how')
@@ -62,8 +62,9 @@ def one_ans(category_ans):
 
 
 #回答候補が複数の時の応答
-def some_ans(category_ans):
+def some_ans(category_ans,result):
 	print('いくつかの回答候補が見つかりました。')
+	'''
 	#動作確認のため、便宜上取り入れた辞書タプル。
 	#本来は情報検索部から解答タプルを得る。
 	ans0  ={'category' :'where',
@@ -91,36 +92,37 @@ def some_ans(category_ans):
 		   'how_time'       :'2時間'}
 
 	anser = [ans0,ans1,ans2]
+	'''
 
 	if category_ans == 'what':
 		print('category is what')
-		for anser in anser:
-			ans_what = anser['what']
+		for result in resul:
+			ans_what = result['what']
 			print(ans_what + 'が候補として挙がっています。')
 
 	elif category_ans == 'when':
 		print('category is when')
-		for anser in anser:
-			ans_when_day  = anser['when_day']
-			ans_when_time = anser['when_time']
+		for result in result:
+			ans_when_day  = result['when_day']
+			ans_when_time = result['when_time']
 			print(ans_when_day + '日の' + ans_when_time + '時が候補として挙がっています。')
 
 	elif category_ans == 'who':
 		print('category is who')
-		for anser in anser:
-			ans_name = anser['who']
+		for result in result:
+			ans_name = result['who']
 			print(ans_name + 'さんのイベントが候補として挙がっています。')
 
 	elif category_ans == 'where':
 		print('category is where')
-		for anser in anser:
-			ans_where = anser['where']
+		for result in result:
+			ans_where = result['where']
 			print(ans_where + 'で行われるイベントが候補として挙がっています。')
 
 	elif category_ans == 'how_time':
 		print('category is how_time')
-		for anser in anser:
-			print(anser['how_time'])
+		for result in result:
+			print(result['how_time'])
 
 	else:
 		print('category is why or how')
