@@ -22,13 +22,10 @@ import ans_main_t3
 import add_q_main
 from k3.main import K3
 
-#---- 日付設定 ----
-#当日の日付設定25~27
-today = 25
 
 #　入力
 st = input('Input: ')
-
+#st = "明日の西野先生の講演会はどこで行われますか？"
 
 #履歴の表示
 #"input:"に[履歴]が入力されたら、即履歴を表示して終了
@@ -91,11 +88,12 @@ if t != None:
 	data['when_time']=time
 
 #ユーザー発話から日付情報を獲得してくる
-data['when_day'] =  get_day.get_day(st,today)
+data['when_day'] =  get_day.get_day(st)
 
 
 
 #とりあえずの結果表示
+
 #print (data)
 #情報検索部でDBの検索
 result = ans_main_t3.search(data)
@@ -103,4 +101,3 @@ result = ans_main_t3.search(data)
 ans_count = len(result)
 
 ans_main_t3.anser(data,category_ans,ans_count,result)
-
