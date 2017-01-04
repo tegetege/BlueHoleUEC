@@ -93,14 +93,10 @@ data['when_day'] =  get_day.get_day(st)
 
 
 #とりあえずの結果表示
-print (data)
 
-#情報検索部に抽出した情報を受け渡す。
-k3 = K3()
-k3.set_params(data)
-result = k3.search()
-
-
+#print (data)
+#情報検索部でDBの検索
+result = ans_main_t3.search(data)
 
 ans_count = len(result)
 
