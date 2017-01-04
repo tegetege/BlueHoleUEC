@@ -13,6 +13,7 @@ import python_mecab
 import get_nlc 
 import get_day 
 import record
+import ans_main_t3
 from k3.main import K3
 
 #回答候補が一つの場合の応答

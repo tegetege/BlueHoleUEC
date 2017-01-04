@@ -100,11 +100,4 @@ result = ans_main_t3.search(data)
 
 ans_count = len(result)
 
-if int(ans_count)  == 1:
-	ans_main_t3.one_ans(category_ans,result)
-elif int(ans_count) <= 5:
-	ans_main_t3.some_ans(category_ans,result)
-else:
-	print('大量の回答候補が見つかりました。追加質問を生成します。')
-	key = 'when'
-	data[key] = add_q_main.make_q(key)
+ans_main_t3.anser(data,category_ans,ans_count,result)
