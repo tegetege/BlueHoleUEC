@@ -4,9 +4,12 @@
 import add_q_main
 import re 
 import sys
+import get_day
 
+today = 25
 
-key = 'what'
-keyword = add_q_main.make_q(key)
- 
-print(keyword)
+st = input('Input: ')
+
+day =  get_day.get_day(st,today)
+
+print(day)
