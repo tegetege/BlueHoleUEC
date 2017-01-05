@@ -10,7 +10,6 @@ ln -sfv /usr/local/opt/mysql/*.plist ~/Library/LaunchAgents
 launchctl load -w ~/Library/LaunchAgents/homebrew.mxcl.mysql.plist
 
 mysql.server start
-mysql -uroot
 mysql -u root
 
  # ここから、起動したMySQL上で入力
@@ -50,6 +49,7 @@ from sqlalchemy import (
 )
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.ext.declarative import declarative_base
+from operator import itemgetter
 Base = declarative_base()
 
 from k3.models.knowledge import Knowledge
@@ -106,9 +106,9 @@ class K3:
 
     for key in self.params.keys():
       if key == 'category': continue
-      pprint(key)
       if key in params:
-        self.params[key] = params[key]
+        if params[key] and params[key] != 'null':
+          self.params[key] = params[key]
       else:
         raise ValueError('%sが存在しません' % key)
       
@@ -116,66 +116,107 @@ class K3:
     self.category = params['category']
 
 
-  def __generate_query(self):
-    query = self.session.query(Knowledge)
-    
-    pprint(self.params)
+  def __generate_queries(self):
+    pattern = []
+    queries = []
+    n = len(self.params)
+    keys = list(self.params.keys())
 
-    if self.mode == self.MODE_STR['and']: # AND検索
-      for key in self.params.keys():
-        print('AND')
-        if self.params[key] and self.params[key] != 'null':
-          query = query.filter(getattr(Knowledge, key) == self.params[key])
-    elif self.mode == self.MODE_STR['or']: # OR検索
-      or_str = (Knowledge.id == '')
-      for key in self.params.keys():
-        print('OR')
-        if self.params[key] and self.params[key] != 'null':
-          or_str |= getattr(Knowledge, key) == self.params[key]
-      query = query.filter(or_str)
+    for i in range(1, pow(2, n)):
+      s = "%0" + str(n) + "d"
+      pattern.append(s % int(format(i, 'b')))
+
+    for i in pattern:
+      query = self.session.query(Knowledge)
+      count = 0
+      for j, v in enumerate(list(i)[::-1]):
+        if v == "1" :
+          if self.params[keys[j]] == None: continue
+          query = query.filter(getattr(Knowledge, keys[j]).like("%%%s%%" % self.params[keys[j]]))
+          count += 1
+      if count: queries.append({'query': query, 'count': count})
+
+    pprint(self.params)
+#    query = self.session.query(Knowledge)
+#    if self.mode == self.MODE_STR['and']: # AND検索
+#      for key in self.params.keys():
+#        print('AND')
+#        if self.params[key] and self.params[key] != 'null':
+#          query = query.filter(getattr(Knowledge, key) == self.params[key])
+#    elif self.mode == self.MODE_STR['or']: # OR検索
+#      or_str = (Knowledge.id == '')
+#      for key in self.params.keys():
+#        print('OR')
+#        if self.params[key] and self.params[key] != 'null':
+#          or_str |= getattr(Knowledge, key) == self.params[key]
+#      query = query.filter(or_str)
 
   
-    return query
+    return queries
 
 
   def to_dict(self, result):
     return list(map(lambda n:n.to_dict(), result)) # 結果を辞書に変換
 
   """
-  辞書形式の情報を要素とするリストを返します。
+  辞書形式の情報を要素とする'data'と、信頼度を表す'reliability'を要素として持つ辞書を列挙するリストを返します。
   何も結果がなければ空のリストを返します。
-  [{'created_at': None,
-  'how_time': '1時間',
-  'id': 3,
-  'title': '説明会',
-  'updated_at': None,
-  'what': '説明会',
-  'when_day': '17',
-  'when_time': '11',
-  'where': '講堂',
-  'who': '教務課'}]
+  [{'data': {'created_at': None,
+             'how_time': '1時間',
+             'id': 5,
+             'title': '西野教授の模擬講義',
+             'updated_at': None,
+             'what': '模擬講義（西野教授）',
+             'when_day': '17',
+             'when_time': '14',
+             'where': '講堂',
+             'who': '西野哲郎'},
+    'reliability': 64},
+   {'data': {'created_at': None,
+             'how_time': '3時間',
+             'id': 1,
+             'title': '講演会',
+             'updated_at': None,
+             'what': '講演会',
+             'when_day': '17',
+             'when_time': '13',
+             'where': '東3-501',
+             'who': '西野教授'},
+    'reliability': 16}]
   """
   def search(self):
-    query = self.__generate_query()
+    results = []
+    queries = self.__generate_queries()
     try:
-      result = self.to_dict(query.all())
+      for query in queries:
+        result = self.to_dict(query['query'].all())
+        results.extend(list(map(lambda n:{'data': n, 'count': query['count']}, result)))
+    
+#        if len(result) == 0:
+#          self.mode = self.MODE_STR['or']
+#          query = self.__generate_query()
+#          result = self.to_dict(query.all())
+        
     except:
       raise Exception('データベースに接続できません' % key)
     
-    if len(result) == 0:
-      self.mode = self.MODE_STR['or']
-      query = self.__generate_query()
-      result = self.to_dict(query.all())
+    results_uniq = []
+    data = []
+    reliabilities = []
+    for result in results:
+      if result['data'] not in data:
+        data.append(result['data'])
+        reliabilities.append(result['count'])
+      else:
+        idx = data.index(result['data'])
+        reliabilities[idx] += result['count']
       
-#    return_hash = {
-#      'answer': [],
-#      'data': result
-#    }
-#    for value in result:
-#      pprint(value)
-#      return_hash['answer'].append(value[str(self.category)])
     
-#    pprint(self.params)
-    pprint(result)
-    return result
+    for idx, item in enumerate(data):
+      results_uniq.append({'data': item, 'reliability': reliabilities[idx]})
+      
+    results_uniq.sort(key=itemgetter('reliability'), reverse=True)
+    
+    pprint(results_uniq)
+    return results_uniq
 
