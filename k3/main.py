@@ -49,7 +49,7 @@ from sqlalchemy import (
 )
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.ext.declarative import declarative_base
-from operator import itemgetter
+from operator import itemgetter, add
 Base = declarative_base()
 
 from k3.models.knowledge import Knowledge
@@ -64,7 +64,7 @@ class K3:
   def __init__(self, debug = False):
     self.debug = (debug == True)
     
-    self.engine = create_engine('mysql+pymysql://k3:k3_password@localhost/k3?charset=utf8', echo=True)
+    self.engine = create_engine('mysql+pymysql://k3:k3_password@localhost/k3?charset=utf8', echo=False)
     Session = sessionmaker(bind=self.engine)
     self.session = Session()
     
@@ -72,71 +72,103 @@ class K3:
     self.category = 'what'
 
     self.params = {
-      'what': None,
-      'when_time': None,
-      'when_day': None,
-      'who': None,
-      'how_time': None,
-      'where': None
+      'what': [],
+      'when_time': [],
+      'when_day': [],
+      'who': [],
+      'how_time': [],
+      'where': []
     }
+    
+    self.search_params = []
+    
+    
+  def __guess_key(self, value):
+    result = []
+    for key in self.params.keys():
+      if key == 'what': continue
+      result.append([key, len(self.session.query(Knowledge).filter(getattr(Knowledge, key).like("%%%s%%" % value)).all())])
+    
+    result.sort(key=itemgetter(1), reverse=True)
+    
+    if result[0][1] == 0:
+      return 'what'
+    else:
+      return result[0][0]
+    
 
   """
   params = {
-    'what': 'null',
-    'when_time': 'null',
-    'when_day': None,
-    'who': 'null',
-    'how_time': 'null',
-    'where': '講堂',
-    'category': 'what'
+    'what': ['西野', '講堂', '講義'],
+    'when_time': [],
+    'when_day': [],
+    'who': ['西野'],
+    'how_time': [],
+    'where': [],
+    'category': 'where'
   }
-  形式が違えば例外（TypeError,ValueError）を投げるので例外処理してください
+  各形式が違えば例外（TypeError,ValueError）を投げるので例外処理してください
   """
   def set_params(self, params):
 #    params = {
-#      'what': 'null',
-#      'when_time': 'null',
-#      'when_day': None,
-#      'who': 'null',
-#      'how_time': 'null',
-#      'where': '講堂',
-#      'category': 'what'
+#      'what': ['西野', '講堂', '講義'],
+#      'when_time': [],
+#      'when_day': [],
+#      'who': [],
+#      'how_time': [],
+#      'where': [],
+#      'category': 'where'
 #    }
     if not isinstance(params, dict): raise TypeError('不正な引数')
 
     for key in self.params.keys():
-      if key == 'category': continue
       if key in params:
-        if params[key] and params[key] != 'null':
-          self.params[key] = params[key]
+        if params[key] == None: continue
+        if isinstance(params[key], list): 
+          for item in params[key]:
+            if item and item != 'null':
+              self.params[key].append(item)
+        else:
+          raise ValueError('%sはlistで渡してください' % key)
       else:
         raise ValueError('%sが存在しません' % key)
       
-    
-    self.category = params['category']
+      
+    for key, values in self.params.items():
+      for value in values:
+        if key == 'what':
+          item = {'key': self.__guess_key(value), 'value': value}
+        else:
+          item = {'key': key, 'value': value}
+        if item not in self.search_params: self.search_params.append(item)
+        
+    pprint(self.params)
+    pprint(self.search_params)
+      
+    if 'category' in params:
+      self.category = params['category']
+    else:
+      raise ValueError('categoryが存在しません')
 
 
   def __generate_queries(self):
     pattern = []
     queries = []
-    n = len(self.params)
-    keys = list(self.params.keys())
+    n = len(self.search_params)
 
     for i in range(1, pow(2, n)):
       s = "%0" + str(n) + "d"
       pattern.append(s % int(format(i, 'b')))
 
-    for i in pattern:
+    for idx, i in enumerate(pattern):
       query = self.session.query(Knowledge)
       count = 0
       for j, v in enumerate(list(i)[::-1]):
         if v == "1" :
-          if self.params[keys[j]] == None: continue
-          query = query.filter(getattr(Knowledge, keys[j]).like("%%%s%%" % self.params[keys[j]]))
+          query = query.filter(getattr(Knowledge, self.search_params[j]['key']).like("%%%s%%" % self.search_params[j]['value']))
           count += 1
-      if count: queries.append({'query': query, 'count': count})
+      if count: queries.append({'query': query, 'count': count, 'all_and': int(idx + 1 == len(pattern))})
 
-    pprint(self.params)
 #    query = self.session.query(Knowledge)
 #    if self.mode == self.MODE_STR['and']: # AND検索
 #      for key in self.params.keys():
@@ -159,30 +191,33 @@ class K3:
     return list(map(lambda n:n.to_dict(), result)) # 結果を辞書に変換
 
   """
-  辞書形式の情報を要素とする'data'と、信頼度を表す'reliability'を要素として持つ辞書を列挙するリストを返します。
+  全条件を使用してマッチしたかどうかを示す'all_and'、辞書形式の情報を要素とする'data'と、
+  信頼度を表す'reliability'を要素として持つ辞書を列挙するリストを返します。
   何も結果がなければ空のリストを返します。
-  [{'data': {'created_at': None,
-             'how_time': '1時間',
-             'id': 5,
-             'title': '西野教授の模擬講義',
+  [{'all_and': 1,
+    'data': {'created_at': None,
+             'how_time': '10時間',
+             'id': 7,
+             'title': '剣道部のフライドチキン',
              'updated_at': None,
-             'what': '模擬講義（西野教授）',
+             'what': '剣道部のフライドチキン',
              'when_day': '17',
-             'when_time': '14',
-             'where': '講堂',
-             'who': '西野哲郎'},
-    'reliability': 64},
-   {'data': {'created_at': None,
-             'how_time': '3時間',
-             'id': 1,
-             'title': '講演会',
+             'when_time': '10',
+             'where': '広場',
+             'who': '剣道部'},
+    'reliability': 4.0},
+   {'all_and': 0,
+    'data': {'created_at': None,
+             'how_time': '10時間',
+             'id': 6,
+             'title': 'ラグビー部の唐揚げ',
              'updated_at': None,
-             'what': '講演会',
+             'what': 'ラグビー部の唐揚げ',
              'when_day': '17',
-             'when_time': '13',
-             'where': '東3-501',
-             'who': '西野教授'},
-    'reliability': 16}]
+             'when_time': '10',
+             'where': '広場',
+             'who': 'ラグビー部'},
+    'reliability': 0.3333333333333333}]
   """
   def search(self):
     results = []
@@ -190,7 +225,7 @@ class K3:
     try:
       for query in queries:
         result = self.to_dict(query['query'].all())
-        results.extend(list(map(lambda n:{'data': n, 'count': query['count']}, result)))
+        results.extend(list(map(lambda n:{'data': n, 'count': query['count'], 'all_and': query['all_and']}, result)))
     
 #        if len(result) == 0:
 #          self.mode = self.MODE_STR['or']
@@ -203,17 +238,20 @@ class K3:
     results_uniq = []
     data = []
     reliabilities = []
+    all_and_list = []
     for result in results:
       if result['data'] not in data:
         data.append(result['data'])
         reliabilities.append(result['count'])
+        all_and_list.append(result['all_and'])
       else:
         idx = data.index(result['data'])
         reliabilities[idx] += result['count']
+        all_and_list[idx] += result['all_and']
       
     
     for idx, item in enumerate(data):
-      results_uniq.append({'data': item, 'reliability': reliabilities[idx]})
+      results_uniq.append({'data': item, 'reliability': reliabilities[idx] / len(result), 'all_and': all_and_list[idx]})
       
     results_uniq.sort(key=itemgetter('reliability'), reverse=True)
     
