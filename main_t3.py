@@ -22,6 +22,7 @@ import ans_main_t3
 import add_q_main
 from k3.main import K3
 
+today = 25
 
 #　入力
 st = input('Input: ')
@@ -49,12 +50,12 @@ record.record_make_user(st,'u')
 
 #データを格納する辞書の作成
 data ={'category' :'null',
-	   'what'     :'null',
-	   'where'    :'null',
-	   'who'      :'null',
-	   'when_time':'null',
-	   'when_day' :'null',
-	   'how_time' :'null'}
+	   'what'     :[],
+	   'where'    :[],
+	   'who'      :[],
+	   'when_time':[],
+	   'when_day' :[],
+	   'how_time' :[]}
 
 
 #　get_nlcからカテゴリータグの取得
@@ -70,31 +71,34 @@ if category_ans != 'what':
 	mecab_noun = python_mecab.mecab_general_noun_get(st)
 	data['what']=mecab_noun
 
-
+'''
 #場所名詞の取得
 if category_ans != 'where':
 	mecab_where = python_mecab.mecab_where_get(st)
 	data['where']=mecab_where
+'''
+
 
 #人名の取得
 mecab_name = python_mecab.mecab_name_get(st)
-data['who']=mecab_name[0]
+data['who']=mecab_name
 
 
 #時間を表現する数字の取得(import reを使用)
 t = re.search('\d+',st)
 if t != None:
 	time = t.group()
-	data['when_time']=time
+	data['when_time']=[time]
 
 #ユーザー発話から日付情報を獲得してくる
-data['when_day'] =  get_day.get_day(st)
+data['when_day'] =  [get_day.get_day(st,today)]
 
 
 
 #とりあえずの結果表示
-
 #print (data)
+
+
 #情報検索部でDBの検索
 result = ans_main_t3.search(data)
 

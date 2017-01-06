@@ -22,7 +22,7 @@ def one_ans(category_ans,result):
 	print('回答候補が一つ見つかりました。')
 
 	#リストの配列から辞書を取り出す
-	result = result[0]
+	result = result[0]['data']
 
 
 	if category_ans == 'what':
@@ -62,6 +62,7 @@ def some_ans(category_ans,results):
 	if category_ans == 'what':
 		print('category is what')
 		for result in results:
+			result = result['data']
 			ans_what = result['what']
 			print(ans_what + 'が候補として挙がっています。')
 
@@ -69,6 +70,7 @@ def some_ans(category_ans,results):
 	elif category_ans == 'when':
 		print('category is when')
 		for result in results:
+			result = result['data']
 			ans_when_day  = result['when_day']
 			ans_when_time = result['when_time']
 
@@ -78,6 +80,7 @@ def some_ans(category_ans,results):
 	elif category_ans == 'who':
 		print('category is who')
 		for result in results:
+			result = result['data']
 			ans_name = result['who']
 			print(ans_name + 'さんのイベントが候補として挙がっています。')
 
@@ -85,6 +88,7 @@ def some_ans(category_ans,results):
 	elif category_ans == 'where':
 		print('category is where')
 		for result in results:
+			result = result['data']
 			ans_where = result['where']
 			print(ans_where + 'で行われるイベントが候補として挙がっています。')
 
@@ -92,6 +96,7 @@ def some_ans(category_ans,results):
 	elif category_ans == 'how_time':
 		print('category is how_time')
 		for result in results:
+			result = result['data']
 			ans_what     = result['what']
 			ans_how_time = result['how_time']
 			print(ans_what + ':' + ans_how_time)
