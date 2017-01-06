@@ -19,9 +19,10 @@ def mecab_general_noun_get(text):
         node = mThings.parseToNode(text)
         #エラー回避のためにリストにnullを入れておく
         keywords = ['null']
+
         while node:
             if node.feature.split(',')[0] == '名詞':
-                if node.feature.split(',')[1] != '代名詞':
+                if node.feature.split(',')[1] not in ['代名詞','非自立','数','接尾'] :
                     keywords.insert(0,node.surface)
             node = node.next
         print('-----------------')
@@ -29,10 +30,11 @@ def mecab_general_noun_get(text):
         print('当てはまる名詞がない場合は"null"を選択')
         print(keywords)
         
-        num = int(input("input : "))
-        num = num - 1
-        return keywords[num]
-
+        #num = int(input("input : "))
+        #num = num - 1
+        #return keywords[num]
+        return keywords
+'''
 def mecab_where_get(text):
         #一般(固有)名詞の獲得
         #MeCab
@@ -43,7 +45,7 @@ def mecab_where_get(text):
         keywords = ['null']
         while node:
             if node.feature.split(',')[0] == '名詞':
-                if node.feature.split(',')[1] != '代名詞':
+                if node.feature.split(',')[1] != '代名詞' and node.feature.split(',')[1] != '非自立':
                     keywords.insert(0,node.surface)
             node = node.next
         print('-----------------')
@@ -51,10 +53,11 @@ def mecab_where_get(text):
         print('当てはまる名詞がない場合は"null"を選択')
         print(keywords)
         
-        num = int(input("input : "))
-        num = num - 1
-        return keywords[num]
-
+        #num = int(input("input : "))
+        #num = num - 1
+        #return keywords[num]
+        return keywords
+'''
 
 def mecab_name_get(text):
         #人名を獲得

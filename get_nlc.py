@@ -14,6 +14,7 @@ def nlc_0(text):
 	  username='f36f2174-aae0-40a0-8b8c-6d138726727d',
 	  password='YW5Yu1VBXdKh')
 #watson　ID:8d6cd8x123-nlc-3468
+	print('----- Watson NLC　からの応答待ち -----')
 	res = natural_language_classifier.classify('ff18a8x156-nlc-1275', text)
 	ans = res["top_class"]
 	return ans
