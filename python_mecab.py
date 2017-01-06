@@ -26,9 +26,9 @@ def mecab_general_noun_get(text):
                     keywords.insert(0,node.surface)
             node = node.next
         print('-----------------')
-        print('一般名詞を抽出しました、イベントカテゴリーにはどの名詞を採用しますか？(1~の番号を入力)')
-        print('当てはまる名詞がない場合は"null"を選択')
-        print(keywords)
+        #print('一般名詞を抽出しました、イベントカテゴリーにはどの名詞を採用しますか？(1~の番号を入力)')
+        #print('当てはまる名詞がない場合は"null"を選択')
+        #print(keywords)
         
         #num = int(input("input : "))
         #num = num - 1
