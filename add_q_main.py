@@ -36,7 +36,7 @@ def make_q(key):
 
 
 
-	elif key == 'when':
+	elif key == 'when_time':
 		print('Key is "when"')
 		print('イベントは何時から始まるかご存知ですか？(わからない場合は"わからない"を入力)')
 		#　入力
@@ -51,7 +51,7 @@ def make_q(key):
 			t = re.search('\d+',st)
 			if t != None:
 				time = t.group()
-				add_q_ans = time
+				add_q_ans = [time]
 			return add_q_ans
 
 
@@ -68,7 +68,7 @@ def make_q(key):
 		#人名の取得
 		else:
 			mecab_name = python_mecab.mecab_name_get(st)
-			return mecab_name[0]
+			return mecab_name
 
 
 
@@ -82,5 +82,5 @@ def make_q(key):
 			add_q_ans = 'null'
 			return add_q_ans
 		else:
-			mecab_where = python_mecab.mecab_where_get(st)
+			mecab_where = python_mecab.mecab_general_noun_get(st)
 			return mecab_where
