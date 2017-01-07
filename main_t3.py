@@ -26,27 +26,23 @@ def start():
 	#日付の指定
 	today = 25
 
+	record.record_A('----- conversation start -----')
 	#　入力
 	st = input('Input: ')
 
 	#履歴の表示
-	#"input:"に[履歴]が入力されたら、即履歴を表示して終了
-	#最後の「履歴」が追加でcsvファイルに書き込まれないように
-	#この位置指定!!
 	get_record = re.search('履歴', st)
 	if get_record :
-		dataReader_user = record.record_user_read()
-		for row in dataReader_user:
-			print(row)
-		dataReader_sys  = record.record_sys_read()
-		for row in dataReader_sys:
-			print(row)
+		record.record_A('----- conversation end   -----')
+		r_read = record.record_read()
+		for row in r_read:
+			print('\n'.join(row))
 		sys.exit()
 
 
 	#履歴(ユーザー)の作成
 	#引数'u'はユーザー入力を示す
-	record.record_make_user(st,'u')
+	record.record_for_u(st,'u')
 
 
 	#データを格納する辞書の作成

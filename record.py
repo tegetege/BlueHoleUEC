@@ -8,8 +8,9 @@
 
 import csv
 
-
 #履歴を作成するモジュール
+
+'''
 #ユーザーインプットを記録
 def record_make_user(text,who):
 	st = text + ',' + who +'\n'
@@ -19,6 +20,7 @@ def record_make_user(text,who):
 	font.close()
 	print('----- ユーザーファイルに記録しました -----')
 
+
 #システム出力を記録
 def record_make_sys(text,who):
 	st = text + ',' + who +'\n'
@@ -27,24 +29,47 @@ def record_make_sys(text,who):
 	font.write(st)
 	font.close()
 	print('----- システムファイルに記録しました -----')
+'''
+
+def record_A(text):
+	st = text + '\n'
+	#テキストモードでファイルをオープンo-punn
+	font = open('conversation_log.csv','a')
+	font.write(st)
+	font.close()
+
+
+
+def record_for_s(text,who):
+	st = text + ',' + who +'\n'
+	#テキストモードでファイルをオープンo-punn
+	font = open('conversation_log.csv','a')
+	font.write(st)
+	font.close()
+	print(text)
+
+
+
+def record_for_u(text,who):
+	st = text + ',' + who +'\n'
+	#テキストモードでファイルをオープンo-punn
+	font = open('conversation_log.csv','a')
+	font.write(st)
+	font.close()
+	print('----- ログファイルに記録しました -----')
+
 
 
 
 #履歴を返すモジュール
+
 #今の所ユーザー履歴のみを表示できる
-def record_user_read():
+def record_read():
 
-	f_u = open('data_user.csv', 'r')
-	dataReader = csv.reader(f_u)
+	record_csv_open = open('conversation_log.csv', 'r')
+	dataReader = csv.reader(record_csv_open)
 	return dataReader
-	f_u.close()
+	record_csv_open.close()
 
 
-
-def record_sys_read():
-
-	f_s = open('data_sys.csv','r')
-	dataReader = csv.reader(f_s)
-	return dataReader
-	f_s.close()
 

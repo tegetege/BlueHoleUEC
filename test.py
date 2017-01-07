@@ -1,15 +1,21 @@
 # coding: utf-8
 #!/usr/bin/env python
 
-import add_q_main
-import re 
-import sys
-import get_day
+#python のバージョン指定：python 3.5.0
+#(条件)MeCabをpythonから利用することができる
 
-today = 25
 
-st = input('Input: ')
 
-day =  get_day.get_day(st,today)
+ 
+import record
 
-print(day)
+
+from k3.main import K3
+
+
+#入出力を記録
+rfs = record.record_for_s
+
+ans_what = '講演会'
+
+rfs(ans_what + 'です。','s')
