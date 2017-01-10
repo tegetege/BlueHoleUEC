@@ -7,7 +7,7 @@
 import sys
 import MeCab
 import re
-
+import pandas
 #----外ファイルインポート----
 import python_mecab
 import get_nlc 
@@ -34,6 +34,7 @@ from k3.main import K3
              'who': '剣道部'},
     'reliability': 4.0},
 '''
+
 #入出力を記録
 rfs = record.record_for_s
 rfu = record.record_for_u
@@ -78,7 +79,7 @@ def one_ans(category_ans,result):
 		rfs('スタッフの方に引き継ぎます。','s')
 
 
-#回答候補をリスト化して表示
+#複数回答候補をリスト化して表示
 def some_ans(category_ans,results):
 	rfs('いくつかの回答候補が見つかりました。','s')
 
@@ -129,6 +130,16 @@ def some_ans(category_ans,results):
 		print('category is why or how')
 		rfs('スタッフの方に引き継ぎます。','s')
 
+#履歴を表示してシステム終了する場合
+def end_with_record(count_row_start):
+	r_read = record.record_read()
+	count_row_end = 0
+	for row in r_read:
+		count_row_end +=  1 
+
+
+
+
 #情報検索部(k3)にアクセスしてDBを検索する
 #該当するタプルはリスト化して返される
 def look_k3(data):
@@ -139,14 +150,18 @@ def look_k3(data):
 
 #情報検索部(k3)から返されたタプルの数によってそれぞれの返答をする。
 #回答候補が５個以上の場合、追加質問を行う。
-def anser(data,category_ans,add_q_count,result):
+def anser(data,category_ans,add_q_count,result,count_row_start):
 	#応答数をカウントする
 	ans_count = len(result)
+
 	if int(ans_count)  == 0:
 		rfs('結果が見つかりませんでした。','s')
 		rfs('スタッフに引き継ぐために履歴表示をします。','s')
 		#終了
 		record.record_A('----- conversation end   -----')
+		df = pandas.read_csv('conversation_log.csv')
+		print_record = df[count_row_start:]
+		print(print_record)
 		sys.exit()
 
 

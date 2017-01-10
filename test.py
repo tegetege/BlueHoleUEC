@@ -7,15 +7,34 @@
 
 
  
+import json
+import sys
+import os
+import codecs
+import MeCab
+import re
+import datetime
+import numpy as np 
+import pandas
+#----外ファイルインポート----
 import record
 
 
-from k3.main import K3
+r_read = record.record_read()
+count_row_start = 0
+for row in r_read:
+	count_row_start +=  1 
+
+record.record_A('----- conversation start   -----')
+
+record.record_A('----- conversation end   -----')
+
+print("以下に履歴を表示します。")
 
 
-#入出力を記録
-rfs = record.record_for_s
+df = pandas.read_csv('conversation_log.csv')
+print_record = df[count_row_start:]
 
-ans_what = '講演会'
+print(print_record)
 
-rfs(ans_what + 'です。','s')
+sys.exit()
