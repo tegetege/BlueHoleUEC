@@ -25,11 +25,18 @@ from k3.main import K3
 def start():
 	#日付の指定
 	today = 25
-
 	record.record_A('----- conversation start -----')
+
+	#前回までの行数を把握しておく
+	r_read = record.record_read()
+	count_row_start = 0
+	for row in r_read:
+		count_row_start +=  1 
+
 	#　入力
 	st = input('Input: ')
 
+	'''
 	#履歴の表示
 	get_record = re.search('履歴', st)
 	if get_record :
@@ -38,8 +45,11 @@ def start():
 		for row in r_read:
 			print('\n'.join(row))
 		sys.exit()
+	'''
 
+	#履歴の表示
 
+	
 	#履歴(ユーザー)の作成
 	#引数'u'はユーザー入力を示す
 	record.record_for_u(st,'u')
@@ -93,8 +103,8 @@ def start():
 	#情報検索部でDBの検索
 	result = ans_main_t3.look_k3(data)
 	
-	
-	ans_main_t3.anser(data,category_ans,0,result)
+	#システム応答の生成
+	ans_main_t3.anser(data,category_ans,0,result,count_row_start)
 
 
 

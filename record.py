@@ -10,36 +10,17 @@ import csv
 
 #履歴を作成するモジュール
 
-'''
-#ユーザーインプットを記録
-def record_make_user(text,who):
-	st = text + ',' + who +'\n'
-	#テキストモードでファイルをオープンo-punn
-	font = open('data_user.csv','a')
-	font.write(st)
-	font.close()
-	print('----- ユーザーファイルに記録しました -----')
 
-
-#システム出力を記録
-def record_make_sys(text,who):
-	st = text + ',' + who +'\n'
-	#テキストモードでファイルをオープンo-punn
-	font = open('data_sys.csv','a')
-	font.write(st)
-	font.close()
-	print('----- システムファイルに記録しました -----')
-'''
-
+#開始&終了フラグの書き込み
 def record_A(text):
-	st = text + '\n'
+	st = text +','+''+ '\n'
 	#テキストモードでファイルをオープンo-punn
 	font = open('conversation_log.csv','a')
 	font.write(st)
 	font.close()
 
 
-
+#システム出力を履歴登録
 def record_for_s(text,who):
 	st = text + ',' + who +'\n'
 	#テキストモードでファイルをオープンo-punn
@@ -50,6 +31,7 @@ def record_for_s(text,who):
 
 
 
+#ユーザー入力を履歴登録
 def record_for_u(text,who):
 	st = text + ',' + who +'\n'
 	#テキストモードでファイルをオープンo-punn
