@@ -21,8 +21,8 @@ def record_A(text):
 
 
 #システム出力を履歴登録
-def record_for_s(text,who):
-	st = text + ',' + who +'\n'
+def record_for_s(text):
+	st = text + ',' + 's' +'\n'
 	#テキストモードでファイルをオープンo-punn
 	font = open('conversation_log.csv','a')
 	font.write(st)
@@ -32,8 +32,8 @@ def record_for_s(text,who):
 
 
 #ユーザー入力を履歴登録
-def record_for_u(text,who):
-	st = text + ',' + who +'\n'
+def record_for_u(text):
+	st = text + ',' + 'u' +'\n'
 	#テキストモードでファイルをオープンo-punn
 	font = open('conversation_log.csv','a')
 	font.write(st)

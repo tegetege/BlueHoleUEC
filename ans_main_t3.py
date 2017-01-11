@@ -42,7 +42,7 @@ rfu = record.record_for_u
 #回答候補が一つの場合の応答
 def one_ans(category_ans,result):
 
-	rfs('回答候補が一つ見つかりました。','s')
+	rfs('回答候補が一つ見つかりました。')
 
 	#リストの配列から辞書を取り出す
 	result = result[0]['data']
@@ -51,44 +51,44 @@ def one_ans(category_ans,result):
 	if category_ans == 'what':
 		print('category is what')
 		ans_what =  result['what']
-		rfs(ans_what + 'です。','s')
+		rfs(ans_what + 'です。')
 
 	elif category_ans == 'when':
 		print('category is when')
 		ans_when_day =  result['when_day']
 		ans_when_time = result['when_time']
-		rfs(ans_when_day + '日の' + ans_when_time + '時です。','s')
+		rfs(ans_when_day + '日の' + ans_when_time + '時です。')
 
 	elif category_ans == 'who':
 		print('category is who')
 		ans_who =  result['who']
-		rfs(ans_who + 'です。','s')
+		rfs(ans_who + 'です。')
 
 	elif category_ans == 'where':
 		print('category is where')
 		ans_where =  result['where']
-		rfs('場所は'+ ans_where + 'です。','s')
+		rfs('場所は'+ ans_where + 'です。')
 
 	elif category_ans == 'how_time':
 		print('category is how_time')
 		ans_how =  result['how_time']
-		rfs(ans_how + 'です。','s')
+		rfs(ans_how + 'です。')
 
 	else:
 		print('category is why or how')
-		rfs('スタッフの方に引き継ぎます。','s')
+		rfs('スタッフの方に引き継ぎます。')
 
 
 #複数回答候補をリスト化して表示
 def some_ans(category_ans,results):
-	rfs('いくつかの回答候補が見つかりました。','s')
+	rfs('いくつかの回答候補が見つかりました。')
 
 	if category_ans == 'what':
 		print('category is what')
 		for result in results:
 			result = result['data']
 			ans_what = result['what']
-			rfs(ans_what + 'が候補として挙がっています。','s')
+			rfs(ans_what + 'が候補として挙がっています。')
 
 
 	elif category_ans == 'when':
@@ -98,7 +98,7 @@ def some_ans(category_ans,results):
 			ans_when_day  = result['when_day']
 			ans_when_time = result['when_time']
 
-			rfs(str(ans_when_day) + '日の' + str(ans_when_time) + '時が候補として挙がっています。','s')
+			rfs(str(ans_when_day) + '日の' + str(ans_when_time) + '時が候補として挙がっています。')
 
 
 	elif category_ans == 'who':
@@ -106,7 +106,7 @@ def some_ans(category_ans,results):
 		for result in results:
 			result = result['data']
 			ans_name = result['who']
-			rfs(ans_name + 'さんのイベントが候補として挙がっています。','s')
+			rfs(ans_name + 'さんのイベントが候補として挙がっています。')
 
 
 	elif category_ans == 'where':
@@ -114,7 +114,7 @@ def some_ans(category_ans,results):
 		for result in results:
 			result = result['data']
 			ans_where = result['where']
-			rfs(ans_where + 'で行われるイベントが候補として挙がっています。','s')
+			rfs(ans_where + 'で行われるイベントが候補として挙がっています。')
 
 
 	elif category_ans == 'how_time':
@@ -123,12 +123,12 @@ def some_ans(category_ans,results):
 			result = result['data']
 			ans_what     = result['what']
 			ans_how_time = result['how_time']
-			rfs(ans_what + ':' + ans_how_time,'s')
+			rfs(ans_what + ':' + ans_how_time)
 
 
 	else:
 		print('category is why or how')
-		rfs('スタッフの方に引き継ぎます。','s')
+		rfs('スタッフの方に引き継ぎます。')
 
 #履歴を表示してシステム終了する場合
 def end_with_record(count_row_start):
@@ -154,46 +154,41 @@ def anser(data,category_ans,add_q_count,result,count_row_start):
 	#応答数をカウントする
 	ans_count = len(result)
 
-	if int(ans_count)  == 0:
-		rfs('結果が見つかりませんでした。','s')
-		rfs('スタッフに引き継ぐために履歴表示をします。','s')
-		#終了
-		record.record_A('----- conversation end   -----')
-		df = pandas.read_csv('conversation_log.csv')
-		print_record = df[count_row_start:]
-		print(print_record)
-		sys.exit()
-
-
-	if int(add_q_count) > 1:
+	#追加質問を1度行い、回答候補が0個のとき
+	if int(add_q_count) >= 1:
 		if int(ans_count)  == 0:
-			rfs('追加質問の内容を加味して再検索しましたが,結果が見つかりませんでした。','s')
-			rfs('スタッフに引き継ぐために履歴表示をします。','s')
+			rfs('追加質問の内容を加味して再検索しましたが,結果が見つかりませんでした。')
+			rfs('スタッフに引き継ぐために履歴表示をします。')
 			#終了
 			record.record_A('----- conversation end   -----')
+			df = pandas.read_csv('conversation_log.csv')
+			print_record = df[count_row_start:]
+			print(print_record)
 			sys.exit()
 
-
+	#追加質問をまだ行っていない時
 	else:
 		#条件の全探索で見つかったものかどうかの判定	
 		result_A = result[0]['all_and']
-		print(result_A)
+
 		#条件の全探索(AND)で見つかった時の返答
 		if result_A == 1:
-			rfs('条件の全探索で当てはまるものが見つかりました。','s')
+			rfs('条件の全探索で当てはまるものが見つかりました。')
 
 			ans_main_t3.one_ans(category_ans,result)
 		
-			rfs('欲しい情報はありましたか？','s')
-			u_ans1 = input('Input: ')
-			rfu(u_ans1,'u')
+			rfs('欲しい情報はありましたか？')
+			u_ans = input('Input: ')
+			rfu(u_ans)
 			if u_ans == 'yes':
-				rfs('良かったです！また、質問してくださいね。','s')
+				rfs('良かったです！また、質問してくださいね。')
+				record.record_A('----- conversation end   -----')
+				sys.exit()
 			elif u_ans2 == 'no':
-				rfs('もう一度初めから開始しますか？(yes/no)','s')
+				rfs('もう一度初めから開始しますか？(yes/no)')
 				#　入力
-				u_ans2 = input('Input: ')
-				rfu(u_ans2,'u')
+				u_ans = input('Input: ')
+				rfu(u_ans)
 				if u_ans == 'yes':
 					main_t3.start()
 				else:
@@ -202,27 +197,39 @@ def anser(data,category_ans,add_q_count,result,count_row_start):
 
 
 		#条件の部分探索(OR)で見つかった時の返答
-		elif result_A == 0:
+		elif result_A == 0 and ans_count < 5:
 			rfs('条件の全探索では当てはまりませんでした。')
 			rfs('代わりに似たものを表示させます。')
 
 			ans_main_t3.some_ans(category_ans,result)
 
 			rfs('欲しい情報はありましたか？(yes/no)')
-			u_ans1 = input('Input: ')
-			rfu(u_ans1,'u')
-			if u_ans1 == 'yes':
+			u_ans = input('Input: ')
+			rfu(u_ans)
+			if u_ans == 'yes':
 				rfs('良かったです！また、質問してくださいね。')
-			elif u_ans1 == 'no':
+				record.record_A('----- conversation end   -----')
+				sys.exit()
+			elif u_ans == 'no':
 				rfs('もう一度初めから開始しますか？(yes/no)')
 				#　入力
 				u_ans2 = input('Input: ')
-				rfu(u_ans2,'u')
+				rfu(u_ans2)
 				if u_ans2 == 'yes':
 					main_t3.start()
 				else:
 					record.record_A('----- conversation end   -----')
 					sys.exit()
+		#回答候補が0個のとき
+		elif int(ans_count)  == 0:
+			rfs('結果が見つかりませんでした。')
+			rfs('スタッフに引き継ぐために履歴表示をします。')
+			#終了
+			record.record_A('----- conversation end   -----')
+			df = pandas.read_csv('conversation_log.csv')
+			print_record = df[count_row_start:]
+			print(print_record)
+			sys.exit()
 
 
 		#追加質問を行う。
@@ -239,5 +246,5 @@ def anser(data,category_ans,add_q_count,result,count_row_start):
 				data[key].extend(add_q_main.make_q(key))
 		
 			rfs('---もう一度検索します。---')
-			ans_main_t3.search(data)
-			ans_main_t3.anser(data,category_ans,add_q_count,result)
+			result = ans_main_t3.look_k3(data)
+			ans_main_t3.anser(data,category_ans,add_q_count,result,count_row_start)

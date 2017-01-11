@@ -5,6 +5,7 @@
 #(条件)MeCabをpythonから利用することができる
 
 
+
 import json
 import sys
 import os
@@ -52,7 +53,7 @@ def start():
 	
 	#履歴(ユーザー)の作成
 	#引数'u'はユーザー入力を示す
-	record.record_for_u(st,'u')
+	record.record_for_u(st)
 
 
 	#データを格納する辞書の作成
@@ -105,8 +106,6 @@ def start():
 	
 	#システム応答の生成
 	ans_main_t3.anser(data,category_ans,0,result,count_row_start)
-
-
 
 
 main_t3.start()
