@@ -257,4 +257,45 @@ class K3:
     
     pprint(results_uniq)
     return results_uniq
+  
+  
+  def get_wanting_category(self):
+    
+    if self.category == 'what':
+      if self.params['where'] == None: return 'where'
+      if self.params['who'] == None: return 'who'
+      if self.params['when_time'] == None: return 'when_time'
+      if self.params['when_day'] == None: return 'when_day'
+      if self.params['how_time'] == None: return 'how_time'
+    if self.category == 'when_time':
+      if self.params['what'] == None: return 'what'
+      if self.params['where'] == None: return 'where'
+      if self.params['who'] == None: return 'who'
+      if self.params['when_day'] == None: return 'when_day'
+      if self.params['how_time'] == None: return 'how_time'
+    if self.category == 'when_day':
+      if self.params['what'] == None: return 'what'
+      if self.params['where'] == None: return 'where'
+      if self.params['who'] == None: return 'who'
+      if self.params['when_day'] == None: return 'when_time'
+      if self.params['how_time'] == None: return 'how_time'
+    if self.category == 'who':
+      if self.params['what'] == None: return 'what'
+      if self.params['where'] == None: return 'where'
+      if self.params['when_time'] == None: return 'when_time'
+      if self.params['when_day'] == None: return 'when_day'
+      if self.params['how_time'] == None: return 'how_time'
+    if self.category == 'how_time':
+      if self.params['what'] == None: return 'what'
+      if self.params['where'] == None: return 'where'
+      if self.params['how_time'] == None: return 'who'
+      if self.params['when_time'] == None: return 'when_time'
+      if self.params['when_day'] == None: return 'when_day'
+    if self.category == 'where':
+      if self.params['what'] == None: return 'what'
+      if self.params['how_time'] == None: return 'who'
+      if self.params['when_time'] == None: return 'when_time'
+      if self.params['when_day'] == None: return 'when_day'
+      if self.params['where'] == None: return 'how_time'
+  
 
