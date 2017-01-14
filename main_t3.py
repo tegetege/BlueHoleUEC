@@ -104,6 +104,7 @@ def start():
 	#情報検索部でDBの検索
 	result = ans_main_t3.look_k3(data)
 	
+	
 	#システム応答の生成
 	ans_main_t3.anser(data,category_ans,0,result,count_row_start)
 

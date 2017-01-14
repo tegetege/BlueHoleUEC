@@ -45,7 +45,7 @@ def record_for_u(text):
 
 #履歴を返すモジュール
 
-#今の所ユーザー履歴のみを表示できる
+#conversation_log.csvの中身を渡す関数。
 def record_read():
 
 	record_csv_open = open('conversation_log.csv', 'r')
