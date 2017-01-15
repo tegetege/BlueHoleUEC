@@ -53,28 +53,36 @@ def one_ans(category_ans,result):
 
 	if category_ans == 'what':
 		print('category is what')
-		ans_what =  result['what']
-		rfs(ans_what + 'です。')
+		ans_title = result['title']
+		rfs(ans_title + 'です。')
 
 	elif category_ans == 'when':
 		print('category is when')
+		ans_title = result['title']
 		ans_when_day =  result['when_day']
 		ans_when_time = result['when_time']
+		rfs('title:' + str(ans_title))
 		rfs(ans_when_day + '日の' + ans_when_time + '時です。')
 
 	elif category_ans == 'who':
 		print('category is who')
+		ans_title = result['title']
 		ans_who =  result['who']
+		rfs('title:' + str(ans_title))
 		rfs(ans_who + 'です。')
 
 	elif category_ans == 'where':
 		print('category is where')
+		ans_title = result['title']
 		ans_where =  result['where']
+		rfs('title:' + str(ans_title))
 		rfs('場所は'+ ans_where + 'です。')
 
 	elif category_ans == 'how_time':
 		print('category is how_time')
 		ans_how =  result['how_time']
+		ans_title = result['title']
+		rfs('title:' + str(ans_title))
 		rfs(ans_how + 'です。')
 
 	else:
@@ -99,8 +107,8 @@ def some_ans(category_ans,results):
 			if category_ans == 'what':
 				print('category is what')
 				result = result['data']
-				ans_what = result['what']
-				rfs(ans_what + 'が候補として挙がっています。')
+				ans_title = result['title']
+				rfs(ans_title + 'があります。')
 
 
 			elif category_ans == 'when':
@@ -110,29 +118,35 @@ def some_ans(category_ans,results):
 				ans_when_day  = result['when_day']
 				ans_when_time = result['when_time']
 				rfs('title:' + str(ans_title))
-				rfs(str(ans_when_day) + '日の' + str(ans_when_time) + '時が候補として挙がっています。')
+				rfs(str(ans_when_day) + '日の' + str(ans_when_time) + '時開始です。')
 
 
 			elif category_ans == 'who':
 				print('category is who')
 				result = result['data']
+				ans_title = result['title']
 				ans_name = result['who']
-				rfs(ans_name + 'さんのイベントが候補として挙がっています。')
+				ans_when_time = result['when_time']
+				rfs('title:' + str(ans_title))
+				rfs(ans_name + 'さん。')
 
 
 			elif category_ans == 'where':
 				print('category is where')
 				result = result['data']
+				ans_title = result['title']
 				ans_where = result['where']
-				rfs(ans_where + 'で行われるイベントが候補として挙がっています。')
+				ans_when_time = result['when_time']
+				rfs('title:' + str(ans_title))
+				rfs(ans_where + 'で行われます。')
 
 
 			elif category_ans == 'how_time':
 				print('category is how_time')
 				result = result['data']
-				ans_what     = result['what']
+				ans_title     = result['title']
 				ans_how_time = result['how_time']
-				rfs(ans_what + ':' + ans_how_time)
+				rfs(ans_title + ':' + ans_how_time + '時間')
 
 
 			else:
