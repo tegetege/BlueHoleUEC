@@ -26,6 +26,7 @@ from k3.main import K3
 def start():
 	#日付の指定
 	today = 25
+
 	record.record_A('----- conversation start -----')
 
 	#前回までの行数を把握しておく
@@ -102,11 +103,11 @@ def start():
 	data['when_day'] =  [get_day.get_day(st,today)]
 
 	#情報検索部でDBの検索
-	result = ans_main_t3.look_k3(data)
+	results = ans_main_t3.look_k3(data)
 	
 	
 	#システム応答の生成
-	ans_main_t3.anser(data,category_ans,0,result,count_row_start)
+	ans_main_t3.anser(data,category_ans,0,results,count_row_start)
 
 
 main_t3.start()

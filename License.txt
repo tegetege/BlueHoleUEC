@@ -1,0 +1,4 @@
+License 
+
+mecab-ipadic-neologd
+:Apache License 2.0
