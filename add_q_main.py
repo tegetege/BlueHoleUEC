@@ -13,6 +13,7 @@ import sys
 import re
 #----外ファイルインポート----
 import python_mecab
+import record
 
 #入出力を記録
 rfs = record.record_for_s
