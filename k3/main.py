@@ -188,7 +188,7 @@ class K3:
       for j, v in enumerate(list(i)[::-1]):
         if v == "1" :
           query = query.filter(getattr(Knowledge, self.search_params[j]['key']).like("%%%s%%" % self.search_params[j]['value']))
-          query = query.filter(not_(Knowledge.id.in_(self.ignore_ids)))
+          if len(self.ignore_ids): query = query.filter(not_(Knowledge.id.in_(self.ignore_ids)))
           count += 1
       if count: queries.append({'query': query, 'count': count, 'all_and': int(idx + 1 == len(pattern))})
 
