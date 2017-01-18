@@ -168,7 +168,7 @@ class K3:
     
 
   # 検索除外対象をリセット
-  def set_ignore(self):
+  def reset_ignore(self):
     self.ignore_ids = []
 
 
