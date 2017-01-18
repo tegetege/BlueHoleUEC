@@ -20,7 +20,7 @@ from k3.main import K3
 
 
 
-#k3システムからもらう"result"の形式
+#k3システムからもらう"results"の形式
 '''
 {'all_and': 1,
     'data': {'created_at': None,
@@ -160,14 +160,6 @@ def some_ans(category_ans,results):
 				print(print_record)
 				sys.exit()
 
-'''
-#履歴を表示してシステム終了する場合
-def end_with_record(count_row_start):
-	r_read = record.record_read()
-	count_row_end = 0
-	for row in r_read:
-		count_row_end +=  1 
-'''
 
 
 #情報検索部(k3)にアクセスしてDBを検索する
@@ -219,22 +211,32 @@ def anser(data,category_ans,add_q_count,results,count_row_start):
 		if result_A == 1:
 			rfs('条件の全探索で当てはまるものが見つかりました。')
 
-			ans_main_t3.one_ans(category_ans,result)
+			ans_main_t3.one_ans(category_ans,results)
 			ans_main_t3.yes_or_no()
 
 			
 		#条件の部分探索で見つかった場合
 		elif result_A == 0:
+			if int(ans_count)  == 0:
+				rfs('追加質問の内容を加味して再検索しましたが、結果が見つかりませんでした。')
+				rfs('スタッフに引き継ぐために履歴表示をします。')
+				#終了
+				record.record_A('----- conversation end   -----')
+				df = pandas.read_csv('conversation_log.csv')
+				print_record = df[count_row_start:]
+				print(print_record)
+				sys.exit()
+
 			#候補の数が５個以内の時
-			if int(ans_count) <= 5:
+			elif int(ans_count) <= 5:
 				rfs('条件の全探索では当てはまりませんでした。')
 				rfs('代わりに似たものを表示させます。')
 
-				ans_main_t3.some_ans(category_ans,result)
+				ans_main_t3.some_ans(category_ans,results)
 				ans_main_t3.yes_or_no()
 
 			#候補の数が５個以上の時
-			if int(ans_count) > 5:
+			elif int(ans_count) > 5:
 				rfs('追加質問の内容を加味して再検索しましたが、候補となる結果が絞りきれませんでした。')
 				rfs('スタッフにひきつぐために履歴表示をします。')
 				#終了
@@ -244,16 +246,6 @@ def anser(data,category_ans,add_q_count,results,count_row_start):
 				print_record = df[count_row_start:]
 				print(print_record)
 				sys.exit()
-
-		elif int(ans_count)  == 0:
-			rfs('追加質問の内容を加味して再検索しましたが、結果が見つかりませんでした。')
-			rfs('スタッフに引き継ぐために履歴表示をします。')
-			#終了
-			record.record_A('----- conversation end   -----')
-			df = pandas.read_csv('conversation_log.csv')
-			print_record = df[count_row_start:]
-			print(print_record)
-			sys.exit()
 
 
 
@@ -266,14 +258,35 @@ def anser(data,category_ans,add_q_count,results,count_row_start):
 		#条件の全探索(AND)で見つかった時の返答
 		if result_A == 1:
 			rfs('条件の全探索で当てはまるものが見つかりました。')
-			ans_main_t3.one_ans(category_ans,result)
+			ans_main_t3.one_ans(category_ans,results)
 			ans_main_t3.yes_or_no()
 
 
 		#条件の部分探索(OR)で見つかった時の返答
 		elif result_A == 0 :
+			if ans_count ==0:
+				rfs('結果が見つかりませんでした。')
+				rfs('追加質問を生成します。')
+				#追加質問をした回数をカウントする変数へ+1
+				add_q_count += 1
+				#k3システムから"最重要キーワード"を取得してくる
+				key = k3.get_wanting_category()
+				print(key)
+				
+				#whereの場合のみ、whatのリストに追加して情報検索部に投げる
+				if key == 'where':
+					data['what'].extend(add_q_main.make_q(key))
+				else:
+					data[key].extend(add_q_main.make_q(key))
+			
+				rfs('----- もう一度検索します。 -----')
+				results = ans_main_t3.look_k3(data)
+			
+				ans_main_t3.anser(data,category_ans,add_q_count,results,count_row_start)
+
+
 			#回答候補が５個以下の時
-			if ans_count <= 5:
+			elif ans_count <= 5:
 				rfs('条件の全探索では当てはまりませんでした。')
 				rfs('代わりに似たものを表示させます。')
 
@@ -298,19 +311,8 @@ def anser(data,category_ans,add_q_count,results,count_row_start):
 					data[key].extend(add_q_main.make_q(key))
 			
 				rfs('----- もう一度検索します。 -----')
-				result = ans_main_t3.look_k3(data)
+				results = ans_main_t3.look_k3(data)
 			
-				ans_main_t3.anser(data,category_ans,add_q_count,result,count_row_start)
+				ans_main_t3.anser(data,category_ans,add_q_count,results,count_row_start)
 
-
-		#回答候補が0個のとき
-		elif int(ans_count)  == 0:
-			rfs('結果が見つかりませんでした。')
-			rfs('スタッフに引き継ぐために履歴表示をします。')
-			#終了
-			record.record_A('----- conversation end   -----')
-			df = pandas.read_csv('conversation_log.csv')
-			print_record = df[count_row_start:]
-			print(print_record)
-			sys.exit()
 
