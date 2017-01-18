@@ -24,6 +24,8 @@ class Knowledge(Base):
   who = Column(VARCHAR(length=255))
   how_time = Column(VARCHAR(length=255))
   where = Column(VARCHAR(length=255))
+  parent_id = Column(BIGINT)
+  image = Column(VARCHAR(length=255))
   created_at = Column(VARCHAR(length=50))
   updated_at = Column(VARCHAR(length=50))
 
@@ -39,6 +41,8 @@ class Knowledge(Base):
       'who': self.who,
       'how_time': self.how_time,
       'where': self.where,
+      'parent_id': self.parent_id,
+      'image': self.image,
       'created_at': self.created_at,
       'updated_at': self.updated_at,
     }

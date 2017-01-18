@@ -82,7 +82,8 @@ class K3:
     
     self.search_params = []
     
-    
+
+  # 名詞から5W1H情報を推定
   def __guess_key(self, value):
     result = []
     for key in self.params.keys():
@@ -97,6 +98,7 @@ class K3:
       return result[0][0]
     
     
+  # パラメータのリセット
   def reset_params(self):
     self.params = {
       'what': [],
@@ -110,6 +112,7 @@ class K3:
     
 
   """
+  パラメータのセット/更新
   params = {
     'what': ['西野', '講堂', '講義'],
     'when_time': [],
@@ -151,6 +154,7 @@ class K3:
       raise ValueError('categoryが存在しません')
 
 
+  # 検索クエリの生成
   def __generate_queries(self):
     pattern = []
     queries = []
@@ -187,10 +191,12 @@ class K3:
     return queries
 
 
+  # 結果の辞書化
   def to_dict(self, result):
     return list(map(lambda n:n.to_dict(), result)) # 結果を辞書に変換
 
   """
+  検索の実行
   全条件を使用してマッチしたかどうかを示す'all_and'、辞書形式の情報を要素とする'data'と、
   信頼度を表す'reliability'を要素として持つ辞書を列挙するリストを返します。
   何も結果がなければ空のリストを返します。
@@ -259,6 +265,7 @@ class K3:
     return results_uniq
   
   
+  # 最重要キーワードの判定
   def get_wanting_category(self):
     
     if self.category == 'what':
@@ -298,4 +305,7 @@ class K3:
       if self.params['when_day'] == []: return 'when_day'
       if self.params['how_time'] == []: return 'how_time'
   
-
+  
+  # 親データを返す
+  def get_parent(self, parent_id):
+    return self.session.query(Knowledge).filter_by(id=parent_id).one().to_dict()
