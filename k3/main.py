@@ -45,7 +45,8 @@ result = k3.search()
 
 from pprint import pprint
 from sqlalchemy import (
-    create_engine
+    create_engine,
+    not_
 )
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.ext.declarative import declarative_base
@@ -80,6 +81,7 @@ class K3:
       'where': []
     }
     
+    self.ignore_ids = []
     self.search_params = []
     
 
@@ -152,6 +154,22 @@ class K3:
       self.category = params['category']
     else:
       raise ValueError('categoryが存在しません')
+    
+
+  # 検索除外対象をセット
+  def set_ignore(self, data):
+    if isinstance(data, list):
+      for item in data:
+        if 'data' in item: item = item['data']
+        self.ignore_ids.append(item['id'])
+    else:
+      if 'data' in data: data = data['data']
+      self.ignore_ids.append(data['id'])
+    
+
+  # 検索除外対象をリセット
+  def reset_ignore(self):
+    self.ignore_ids = []
 
 
   # 検索クエリの生成
@@ -170,6 +188,7 @@ class K3:
       for j, v in enumerate(list(i)[::-1]):
         if v == "1" :
           query = query.filter(getattr(Knowledge, self.search_params[j]['key']).like("%%%s%%" % self.search_params[j]['value']))
+          if len(self.ignore_ids): query = query.filter(not_(Knowledge.id.in_(self.ignore_ids)))
           count += 1
       if count: queries.append({'query': query, 'count': count, 'all_and': int(idx + 1 == len(pattern))})
 
