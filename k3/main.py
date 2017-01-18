@@ -96,6 +96,18 @@ class K3:
     else:
       return result[0][0]
     
+    
+  def reset_params(self):
+    self.params = {
+      'what': [],
+      'when_time': [],
+      'when_day': [],
+      'who': [],
+      'how_time': [],
+      'where': []
+    }
+    self.search_params = []
+    
 
   """
   params = {
@@ -132,9 +144,6 @@ class K3:
         else:
           item = {'key': key, 'value': value}
         if item not in self.search_params: self.search_params.append(item)
-        
-    pprint(self.params)
-    pprint(self.search_params)
       
     if 'category' in params:
       self.category = params['category']
