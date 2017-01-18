@@ -110,15 +110,6 @@ class K3:
   各形式が違えば例外（TypeError,ValueError）を投げるので例外処理してください
   """
   def set_params(self, params):
-#    params = {
-#      'what': ['西野', '講堂', '講義'],
-#      'when_time': [],
-#      'when_day': [],
-#      'who': [],
-#      'how_time': [],
-#      'where': [],
-#      'category': 'where'
-#    }
     if not isinstance(params, dict): raise TypeError('不正な引数')
 
     for key in self.params.keys():
@@ -126,7 +117,7 @@ class K3:
         if params[key] == None: continue
         if isinstance(params[key], list): 
           for item in params[key]:
-            if item and item != 'null':
+            if item and item != 'null' and item not in self.params[key]:
               self.params[key].append(item)
         else:
           raise ValueError('%sはlistで渡してください' % key)
@@ -288,14 +279,14 @@ class K3:
     if self.category == 'how_time':
       if self.params['what'] == []: return 'what'
       if self.params['where'] == []: return 'where'
-      if self.params['how_time'] == []: return 'who'
+      if self.params['how_time'] == []: return 'how_time'
       if self.params['when_time'] == []: return 'when_time'
       if self.params['when_day'] == []: return 'when_day'
     if self.category == 'where':
       if self.params['what'] == []: return 'what'
-      if self.params['how_time'] == []: return 'who'
+      if self.params['who'] == []: return 'who'
       if self.params['when_time'] == []: return 'when_time'
       if self.params['when_day'] == []: return 'when_day'
-      if self.params['where'] == []: return 'how_time'
+      if self.params['how_time'] == []: return 'how_time'
   
 
