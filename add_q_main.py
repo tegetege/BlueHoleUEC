@@ -39,7 +39,7 @@ def make_q(key):
 
 	elif key == 'when_day':
 		rfs('Key is "when_day"')
-		rfs('イベントは何時から始まるかわかりますか？(わからない場合は"わからない"を入力)')
+		rfs('イベントは何日に行われるかわかりますか？(わからない場合は"わからない"を入力)')
 		#　入力
 		st = input('Input: ')
 		rfu(st)
