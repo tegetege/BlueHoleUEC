@@ -23,7 +23,7 @@ def make_q(key):
 
 	if key == 'what':
 		rfs('Key is "what"')
-		rfs('イベント名はご存知ですか？(わからない場合は"わからない"を入力)')
+		rfs('イベント名はわかりますか？(わからない場合は"わからない"を入力)')
 		#　入力
 		st = input('Input: ')
 		rfu(st)
@@ -39,7 +39,7 @@ def make_q(key):
 
 	elif key == 'when_day':
 		rfs('Key is "when_day"')
-		rfs('イベントは何時から始まるかご存知ですか？(わからない場合は"わからない"を入力)')
+		rfs('イベントは何時から始まるかわかりますか？(わからない場合は"わからない"を入力)')
 		#　入力
 		st = input('Input: ')
 		rfu(st)
@@ -61,7 +61,7 @@ def make_q(key):
 
 	elif key == 'when_time':
 		rfs('Key is "when_time"')
-		rfs('イベントは何時から始まるかご存知ですか？(わからない場合は"わからない"を入力)')
+		rfs('イベントは何時から始まるかわかりますか？(わからない場合は"わからない"を入力)')
 		#　入力
 		st = input('Input: ')
 		rfu(st)
@@ -81,7 +81,7 @@ def make_q(key):
 
 	elif key == 'who':
 		rfs('Key is "who"')
-		rfs('どなたがご出演かご存知ですか？(わからない場合は"わからない"を入力)')
+		rfs('どなたがご出演かわかりますか？(わからない場合は"わからない"を入力)')
 		#　入力
 		st = input('Input: ')
 		rfu(st)
@@ -99,7 +99,7 @@ def make_q(key):
 
 	elif key == 'where':
 		rfs('key is "where"')
-		rfs('どこで行われるかご存知ですか？(わからない場合は"わからない"を入力)')
+		rfs('どこで行われるかわかりますか？(わからない場合は"わからない"を入力)')
 		#　入力
 		st = input('Input: ')
 		rfu(st)
@@ -114,7 +114,7 @@ def make_q(key):
 
 	elif key == 'how_time':
 		rfs('key is "how_time"')
-		rfs('そのイベントは何時間開催される予定でしょうか？(わからない場合は"わからない"を入力)')
+		rfs('そのイベントは何時間開催される予定かわかりますか？(わからない場合は"わからない"を入力)')
 		#　入力
 		st = input('Input: ')
 		rfu(st)
