@@ -16,7 +16,7 @@ import datetime
 #----外ファイルインポート----
 import python_mecab
 import get_nlc 
-import get_day 
+import get_day_time
 import record
 import add_q_main
 import main_t3
@@ -75,10 +75,9 @@ def start():
 
 
 	#一般(固有)名詞の取得
-	if category_ans != 'what':
-		#python_mecab.pyのmecab関数を利用
-		mecab_noun = python_mecab.mecab_general_noun_get(st)
-		data['what']=mecab_noun
+	#python_mecab.pyのmecab関数を利用
+	mecab_noun = python_mecab.mecab_general_noun_get(st)
+	data['what']=mecab_noun
 
 	'''
 	#whatと統合してk3に投げる
@@ -92,15 +91,19 @@ def start():
 	mecab_name = python_mecab.mecab_name_get(st)
 	data['who']=mecab_name
 
-
+	#ユーザー発話から時間の獲得
+	data['when_time'] = [get_day_time.get_time(st)]
+	'''
 	#時間を表現する数字の取得(import reを使用)
 	t = re.search('\d+',st)
 	if t != None:
 		time = t.group()
 		data['when_time']=[time]
+	'''
+
 
 	#ユーザー発話から日付情報を獲得してくる
-	data['when_day'] =  [get_day.get_day(st,today)]
+	data['when_day'] =  [get_day_time.get_day(st,today)]
 
 	#情報検索部でDBの検索
 	results = ans_main_t3.look_k3(data)

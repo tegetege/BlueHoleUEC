@@ -20,21 +20,51 @@ import pandas
 import record
 
 
-r_read = record.record_read()
-count_row_start = 0
-for row in r_read:
-	count_row_start +=  1 
 
-record.record_A('----- conversation start   -----')
-
-record.record_A('----- conversation end   -----')
-
-print("以下に履歴を表示します。")
+#　入力
+st = input('Input: ')
 
 
-df = pandas.read_csv('conversation_log.csv')
-print_record = df[count_row_start:]
+t_hour = re.compile("([0-9]+)(時)")
+t_min  = re.compile("([0-9]+)(分)") 
+t_min_half = re.compile("([0-9]+)(時半)")
 
-print(print_record)
+t_get_hour = t_hour.findall(st)
+t_get_min  = t_min.findall(st) 
+if t_get_hour != []:
+	if t_get_min !=[]:
+		print( t_get_hour[0][0] + ":" + t_get_min[0][0])
+	print( t_get_hour[0][0] + ":00")
 
-sys.exit()
+
+t_get_hour_half = t_min_half.findall(st)
+if t_get_hour_half !=[]:
+	print(t_get_hour_half[0][0] + ":30")
+	
+
+'''
+t = re.compile("([0-9][0-9]):([0-9][0-9])")
+get_time = t.findall(st)
+if get_time !=[]:
+	print(t.findall(st)[0][0] + ":" + t.findall(st)[0][1])
+else:
+	print('時間は得られませんでした。')
+
+'''
+
+'''
+#時間を表現する数字の取得(import reを使用)
+#~~:~~の表現をカバー
+t_day = re.compile("([0-9]+)(日)")
+print("day")
+t_day_get = t_day.findall(st)
+
+if t_day_get != []:
+	print(t_day_get[0][0])
+
+t_time = re.compile("([0-9]+)(時)")
+print("time")
+t_time_get = t_time.findall(st)
+if t_time_get != []:
+	print(t_time_get[0][0])
+'''
