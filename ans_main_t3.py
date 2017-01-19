@@ -11,7 +11,7 @@ import pandas
 #----外ファイルインポート----
 import python_mecab
 import get_nlc 
-import get_day 
+import get_day_time
 import record
 import ans_main_t3
 import add_q_main
