@@ -62,7 +62,7 @@ def one_ans(category_ans,result):
 		ans_when_day =  result['when_day']
 		ans_when_time = result['when_time']
 		rfs('title:' + str(ans_title))
-		rfs(ans_when_day + '日の' + ans_when_time + '時です。')
+		rfs(ans_when_day + '日の' + ans_when_time + '開始です。')
 
 	elif category_ans == 'who':
 		print('category is who')
@@ -99,30 +99,31 @@ def one_ans(category_ans,result):
 
 #複数回答候補をリスト化して表示
 def some_ans(category_ans,results):
-	rfs('いくつかの回答候補が見つかりました。')
+	rfs('>いくつかの回答候補が見つかりました。')
 	for result in results:
 		#信頼度が１以上の回答のみを表示
 		if result['reliability'] >1:
 
 			if category_ans == 'what':
-				print('category is what')
+				#print('category is what')
 				result = result['data']
 				ans_title = result['title']
-				rfs(ans_title + 'があります。')
+				ans_when_time = result['when_time']
+				rfs(ans_title + 'があります。' + '(' + ans_when_time + ')')
 
 
 			elif category_ans == 'when':
-				print('category is when')
+				#print('category is when')
 				result = result['data']
 				ans_title = result['title']
 				ans_when_day  = result['when_day']
 				ans_when_time = result['when_time']
 				rfs('title:' + str(ans_title))
-				rfs(str(ans_when_day) + '日の' + str(ans_when_time) + '時開始です。')
+				rfs(str(ans_when_day) + '日の' + str(ans_when_time) + '開始です。')
 
 
 			elif category_ans == 'who':
-				print('category is who')
+				#print('category is who')
 				result = result['data']
 				ans_title = result['title']
 				ans_name = result['who']
@@ -132,7 +133,7 @@ def some_ans(category_ans,results):
 
 
 			elif category_ans == 'where':
-				print('category is where')
+				#print('category is where')
 				result = result['data']
 				ans_title = result['title']
 				ans_where = result['where']
@@ -142,7 +143,7 @@ def some_ans(category_ans,results):
 
 
 			elif category_ans == 'how_time':
-				print('category is how_time')
+				#print('category is how_time')
 				result = result['data']
 				ans_title     = result['title']
 				ans_how_time = result['how_time']
@@ -170,15 +171,15 @@ def look_k3(data):
 
 
 def yes_or_no():
-	rfs('欲しい情報はありましたか？(yes/no)')
+	rfs('>欲しい情報はありましたか？(yes/no)')
 	u_ans = input('Input: ')
 	rfu(u_ans)
 	if u_ans == 'yes':
-		rfs('良かったです！また、質問してくださいね。')
+		rfs('>良かったです！また、質問してくださいね。')
 		record.record_A('----- conversation end   -----')
 		sys.exit()
 	elif u_ans == 'no':
-		rfs('もう一度初めから開始しますか？(yes/no)')
+		rfs('>もう一度初めから開始しますか？(yes/no)')
 		#　入力
 		u_ans = input('Input: ')
 		rfu(u_ans)
@@ -200,16 +201,16 @@ def count_list(results):
 def anser(data,category_ans,add_q_count,results,count_row_start):
 	#信頼度１以上の回答候補をカウントする
 	ans_count = ans_main_t3.count_list(results)
-
-	#追加質問を1度行った時
-	if int(add_q_count) >= 1:
+	res_count = len(results)
+	#追加質問を2度行った時
+	if int(add_q_count) >= 2:
 
 		#条件の全探索で見つかったものかどうかの判定	
 		result_A = results[0]['all_and']
 
 		#条件の全探索で見つかった場合
 		if result_A == 1:
-			rfs('条件の全探索で当てはまるものが見つかりました。')
+			rfs('>条件の全探索で当てはまるものが見つかりました。')
 
 			ans_main_t3.one_ans(category_ans,results)
 			ans_main_t3.yes_or_no()
@@ -218,8 +219,8 @@ def anser(data,category_ans,add_q_count,results,count_row_start):
 		#条件の部分探索で見つかった場合
 		elif result_A == 0:
 			if int(ans_count)  == 0:
-				rfs('追加質問の内容を加味して再検索しましたが、結果が見つかりませんでした。')
-				rfs('スタッフに引き継ぐために履歴表示をします。')
+				rfs('>追加質問の内容を加味して再検索しましたが、結果が見つかりませんでした。')
+				rfs('>スタッフに引き継ぐために履歴表示をします。')
 				#終了
 				record.record_A('----- conversation end   -----')
 				df = pandas.read_csv('conversation_log.csv')
@@ -229,16 +230,16 @@ def anser(data,category_ans,add_q_count,results,count_row_start):
 
 			#候補の数が５個以内の時
 			elif int(ans_count) <= 5:
-				rfs('条件の全探索では当てはまりませんでした。')
-				rfs('代わりに似たものを表示させます。')
+				rfs('>条件の全探索では当てはまりませんでした。')
+				rfs('>代わりに似たものを表示させます。')
 
 				ans_main_t3.some_ans(category_ans,results)
 				ans_main_t3.yes_or_no()
 
 			#候補の数が５個以上の時
 			elif int(ans_count) > 5:
-				rfs('追加質問の内容を加味して再検索しましたが、候補となる結果が絞りきれませんでした。')
-				rfs('スタッフにひきつぐために履歴表示をします。')
+				rfs('>追加質問の内容を加味して再検索しましたが、候補となる結果が絞りきれませんでした。')
+				rfs('>スタッフにひきつぐために履歴表示をします。')
 				#終了
 				record.record_A('----- conversation end   -----')
 				#履歴の表示
@@ -257,7 +258,7 @@ def anser(data,category_ans,add_q_count,results,count_row_start):
 
 		#条件の全探索(AND)で見つかった時の返答
 		if result_A == 1:
-			rfs('条件の全探索で当てはまるものが見つかりました。')
+			rfs('>条件の全探索で当てはまるものが見つかりました。')
 			ans_main_t3.one_ans(category_ans,results)
 			ans_main_t3.yes_or_no()
 
@@ -265,13 +266,12 @@ def anser(data,category_ans,add_q_count,results,count_row_start):
 		#条件の部分探索(OR)で見つかった時の返答
 		elif result_A == 0 :
 			if ans_count ==0:
-				rfs('結果が見つかりませんでした。')
-				rfs('追加質問を生成します。')
+				rfs('>結果が見つかりませんでした。')
+				rfs('>追加質問を生成します。')
 				#追加質問をした回数をカウントする変数へ+1
 				add_q_count += 1
 				#k3システムから"最重要キーワード"を取得してくる
 				key = k3.get_wanting_category()
-				print(key)
 				
 				#whereの場合のみ、whatのリストに追加して情報検索部に投げる
 				if key == 'where':
@@ -287,8 +287,8 @@ def anser(data,category_ans,add_q_count,results,count_row_start):
 
 			#回答候補が５個以下の時
 			elif ans_count <= 5:
-				rfs('条件の全探索では当てはまりませんでした。')
-				rfs('代わりに似たものを表示させます。')
+				rfs('>条件の全探索では当てはまりませんでした。')
+				rfs('>代わりに似たものを表示させます。')
 
 				ans_main_t3.some_ans(category_ans,results)
 				ans_main_t3.yes_or_no()
@@ -296,13 +296,12 @@ def anser(data,category_ans,add_q_count,results,count_row_start):
 			#回答候補が５個以上の時
 			elif ans_count  >5:
 				#追加質問を行う。
-				rfs('大量の回答候補が見つかりました。追加質問を生成します。')
+				rfs('>大量の回答候補が見つかりました。追加質問を生成します。')
 				#追加質問をした回数をカウントする変数へ+1
 				add_q_count += 1
 
 				#k3システムから"最重要キーワード"を取得してくる
 				key = k3.get_wanting_category()
-				print(key)
 				
 				#whereの場合のみ、whatのリストに追加して情報検索部に投げる
 				if key == 'where':
@@ -314,5 +313,3 @@ def anser(data,category_ans,add_q_count,results,count_row_start):
 				results = ans_main_t3.look_k3(data)
 			
 				ans_main_t3.anser(data,category_ans,add_q_count,results,count_row_start)
-
-
