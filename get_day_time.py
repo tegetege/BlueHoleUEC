@@ -52,6 +52,7 @@ def get_time(text):
 		#~~:~~の形に形成して返す
 		return t.findall(text)[0][0] + ":" + t.findall(text)[0][1]
 	
+	#正規表現を利用して「~~時(半)」の形に反応
 	
 	t_hour = re.compile("([0-9]+)(時)")
 	t_min  = re.compile("([0-9]+)(分)") 

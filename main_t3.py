@@ -35,6 +35,7 @@ def start():
 	for row in r_read:
 		count_row_start +=  1 
 
+	print('>質問は何でしょうか？')
 	#　入力
 	st = input('Input: ')
 
@@ -93,13 +94,6 @@ def start():
 
 	#ユーザー発話から時間の獲得
 	data['when_time'] = [get_day_time.get_time(st)]
-	'''
-	#時間を表現する数字の取得(import reを使用)
-	t = re.search('\d+',st)
-	if t != None:
-		time = t.group()
-		data['when_time']=[time]
-	'''
 
 
 	#ユーザー発話から日付情報を獲得してくる

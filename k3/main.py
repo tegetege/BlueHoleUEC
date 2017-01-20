@@ -154,7 +154,7 @@ class K3:
       self.category = params['category']
     else:
       raise ValueError('categoryが存在しません')
-    
+    pprint(self.search_params)
 
   # 検索除外対象をセット
   def set_ignore(self, data):
