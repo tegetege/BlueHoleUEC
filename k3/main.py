@@ -290,38 +290,31 @@ class K3:
     if self.category == 'what':
       if self.params['where'] == []: return 'where'
       if self.params['who'] == []: return 'who'
-      if self.params['when_time'] == []: return 'when_time'
-      if self.params['when_day'] == []: return 'when_day'
+      if self.params['when_time'] == []: return 'when'
+      if self.params['when_day'] == []: return 'when'
       if self.params['how_time'] == []: return 'how_time'
-    if self.category == 'when_time':
+    if self.category == 'when':
       if self.params['what'] == []: return 'what'
       if self.params['where'] == []: return 'where'
       if self.params['who'] == []: return 'who'
-      if self.params['when_day'] == []: return 'when_day'
-      if self.params['how_time'] == []: return 'how_time'
-    if self.category == 'when_day':
-      if self.params['what'] == []: return 'what'
-      if self.params['where'] == []: return 'where'
-      if self.params['who'] == []: return 'who'
-      if self.params['when_day'] == []: return 'when_time'
       if self.params['how_time'] == []: return 'how_time'
     if self.category == 'who':
       if self.params['what'] == []: return 'what'
       if self.params['where'] == []: return 'where'
-      if self.params['when_time'] == []: return 'when_time'
-      if self.params['when_day'] == []: return 'when_day'
+      if self.params['when_time'] == []: return 'when'
+      if self.params['when_day'] == []: return 'when'
       if self.params['how_time'] == []: return 'how_time'
     if self.category == 'how_time':
       if self.params['what'] == []: return 'what'
       if self.params['where'] == []: return 'where'
       if self.params['how_time'] == []: return 'how_time'
-      if self.params['when_time'] == []: return 'when_time'
-      if self.params['when_day'] == []: return 'when_day'
+      if self.params['when_time'] == []: return 'when'
+      if self.params['when_day'] == []: return 'when'
     if self.category == 'where':
       if self.params['what'] == []: return 'what'
       if self.params['who'] == []: return 'who'
-      if self.params['when_time'] == []: return 'when_time'
-      if self.params['when_day'] == []: return 'when_day'
+      if self.params['when_time'] == []: return 'when'
+      if self.params['when_day'] == []: return 'when'
       if self.params['how_time'] == []: return 'how_time'
   
   
