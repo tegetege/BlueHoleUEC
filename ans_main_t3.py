@@ -201,6 +201,7 @@ def count_list(results):
 def anser(data,category_ans,add_q_count,results,count_row_start):
 	#信頼度１以上の回答候補をカウントする
 	ans_count = ans_main_t3.count_list(results)
+	#k3システムから返されたリストの数を数える
 	res_count = len(results)
 	#追加質問を2度行った時
 	if int(add_q_count) >= 2:
@@ -228,9 +229,17 @@ def anser(data,category_ans,add_q_count,results,count_row_start):
 				print(print_record)
 				sys.exit()
 
+			elif int(ans_count) == 1:
+				rfs('>条件の部分探索で当てはまりました。')
+				rfs('>代わりに似たものを表示させます。')
+
+				ans_main_t3.one_ans(category_ans,results)
+				ans_main_t3.yes_or_no()
+
+
 			#候補の数が５個以内の時
 			elif int(ans_count) <= 5:
-				rfs('>条件の全探索では当てはまりませんでした。')
+				rfs('>条件の部分探索では当てはまりました。')
 				rfs('>代わりに似たものを表示させます。')
 
 				ans_main_t3.some_ans(category_ans,results)
