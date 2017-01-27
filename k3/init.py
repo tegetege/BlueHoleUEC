@@ -34,8 +34,7 @@ headers = {
  'where': 7,
  'parent_id': 8,
  'image': 9,
- 'created_at': 10,
- 'updated_at': 11
+ 'detail': 10
 }
 
 engine = create_engine('mysql+pymysql://k3:k3_password@localhost/k3?charset=utf8', echo=False)
@@ -67,8 +66,7 @@ with open('./data/data.csv', 'r') as f:
       where = row[headers['where']] if row[headers['where']] != '' else None,
       parent_id = row[headers['parent_id']] if row[headers['parent_id']] != '' else None,
       image = row[headers['image']] if row[headers['image']] != '' else None,
-      created_at = row[headers['created_at']] if row[headers['created_at']] != '' else None,
-      updated_at = row[headers['updated_at']] if row[headers['updated_at']] != '' else None
+      detail = row[headers['detail']] if row[headers['detail']] != '' else None
     )
     knowledges.append(knowledge)
     print(row)   # １行ずつスペース区切りで表示
