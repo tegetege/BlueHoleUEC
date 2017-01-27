@@ -147,8 +147,9 @@ class K3:
         if key == 'what':
           guessed_key = self.__guess_key(value)
           item = {'key': guessed_key, 'value': value}
-          self.params[guessed_key].append(value)
-          self.params['what'].remove(value)
+          if guessed_key != 'what':
+            self.params[guessed_key].append(value)
+            self.params['what'].remove(value)
         else:
           item = {'key': key, 'value': value}
         if item not in self.search_params: self.search_params.append(item)
