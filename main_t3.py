@@ -98,6 +98,7 @@ def start():
 
 	#ユーザー発話から日付情報を獲得してくる
 	data['when_day'] =  [get_day_time.get_day(st,today)]
+	print(data)
 
 	#情報検索部でDBの検索
 	results = ans_main_t3.look_k3(data)
