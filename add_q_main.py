@@ -14,6 +14,7 @@ import re
 #----外ファイルインポート----
 import python_mecab
 import record
+import get_day_time
 
 #入出力を記録
 rfs = record.record_for_s
@@ -32,7 +33,7 @@ def make_q(key):
 		null_word = re.search('わからない|わかりません',st)
 		if null_word :
 			add_q_ans = 'null'
-			return add_q_ans
+			return [add_q_ans]
 		else:
 			mecab_noun = python_mecab.mecab_general_noun_get(st)
 			return  mecab_noun
@@ -48,14 +49,12 @@ def make_q(key):
 		null_word = re.search('わからない|わかりません',st)
 		if null_word :
 			add_q_ans = 'null'
-			return add_q_ans
+			return [add_q_ans]
 		#時間を表現する数字の取得(import reを使用)
 		else:
-			t = re.search('\d+',st)
-			if t != None:
-				time = t.group()
-				add_q_ans = [time]
-			return add_q_ans
+			#日付の指定
+			today = 25
+			return [get_day_time.get_day(st,today)]
 
 
 
@@ -70,14 +69,10 @@ def make_q(key):
 		null_word = re.search('わからない|わかりません',st)
 		if null_word :
 			add_q_ans = 'null'
-			return add_q_ans
+			return [add_q_ans]
 		#時間を表現する数字の取得(import reを使用)
 		else:
-			t = re.search('\d+',st)
-			if t != None:
-				time = t.group()
-				add_q_ans = [time]
-			return add_q_ans
+			return [get_day_time.get_time(st)]
 
 
 	elif key == 'who':
@@ -90,13 +85,11 @@ def make_q(key):
 		null_word = re.search('わからない|わかりません',st)
 		if null_word :
 			add_q_ans = 'null'
-			return add_q_ans
+			return [add_q_ans]
 		#人名の取得
 		else:
 			mecab_name = python_mecab.mecab_name_get(st)
 			return mecab_name
-
-
 
 	elif key == 'where':
 		rfs('>key is "where"')
@@ -108,7 +101,7 @@ def make_q(key):
 		null_word = re.search('わからない|わかりません',st)
 		if null_word :
 			add_q_ans = 'null'
-			return add_q_ans
+			return [add_q_ans]
 		else:
 			mecab_where = python_mecab.mecab_general_noun_get(st)
 			return mecab_where
@@ -123,13 +116,13 @@ def make_q(key):
 		null_word = re.search('わからない|わかりません',st)
 		if null_word :
 			add_q_ans = 'null'
-			return add_q_ans
+			return [add_q_ans]
 		else:
 			mecab_where = python_mecab.mecab_general_noun_get(st)
 			return mecab_where
 
-	elif key == 'null':
-		rfs('>最重要キーワードがエラーです')
+	elif key == None:
+		rfs('>検索結果が絞り込めませんでした。スタッフへ引き継ぎます')
 		rfs('>履歴を表示して、システムを終了します')
 		record.record_A('----- conversation end   -----')
 		#履歴の表示
