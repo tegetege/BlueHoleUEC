@@ -297,18 +297,18 @@ class K3:
       if self.params['who'] == [] and 'who' not in self.asked_category: wanting_category = 'who'
       if self.params['when_time'] == [] and 'when_time' not in self.asked_category: wanting_category = 'when_time'
       if self.params['when_day'] == [] and 'when_day' not in self.asked_category: wanting_category = 'when_day'
-      if self.params['how_time'] == [] and 'how_time' not in self.asked_category: wanting_category = 'how_time'
+      #if self.params['how_time'] == [] and 'how_time' not in self.asked_category: wanting_category = 'how_time'
     if self.category == 'when':
       if self.params['what'] == [] and 'what' not in self.asked_category: wanting_category = 'what'
       if self.params['where'] == [] and 'where' not in self.asked_category: wanting_category = 'where'
       if self.params['who'] == [] and 'who' not in self.asked_category: wanting_category = 'who'
-      if self.params['how_time'] == [] and 'how_time' not in self.asked_category: wanting_category = 'how_time'
+      #if self.params['how_time'] == [] and 'how_time' not in self.asked_category: wanting_category = 'how_time'
     if self.category == 'who':
       if self.params['what'] == [] and 'what' not in self.asked_category: wanting_category = 'what'
       if self.params['where'] == [] and 'where' not in self.asked_category: wanting_category = 'where'
       if self.params['when_time'] == [] and 'when_time' not in self.asked_category: wanting_category = 'when_time'
       if self.params['when_day'] == [] and 'when_day' not in self.asked_category: wanting_category = 'when_day'
-      if self.params['how_time'] == [] and 'how_time' not in self.asked_category: wanting_category = 'how_time'
+      #if self.params['how_time'] == [] and 'how_time' not in self.asked_category: wanting_category = 'how_time'
     if self.category == 'how_time':
       if self.params['what'] == [] and 'what' not in self.asked_category: wanting_category = 'what'
       if self.params['where'] == [] and 'where' not in self.asked_category: wanting_category = 'where'
@@ -320,7 +320,14 @@ class K3:
       if self.params['who'] == [] and 'who' not in self.asked_category: wanting_category = 'who'
       if self.params['when_time'] == [] and 'when_time' not in self.asked_category: wanting_category = 'when_time'
       if self.params['when_day'] == [] and 'when_day' not in self.asked_category: wanting_category = 'when_day'
-      if self.params['how_time'] == [] and 'how_time' not in self.asked_category: wanting_category = 'how_time'
+      #if self.params['how_time'] == [] and 'how_time' not in self.asked_category: wanting_category = 'how_time'
+    if self.category == 'how':
+      if self.params['what'] == [] and 'what' not in self.asked_category: wanting_category = 'what'
+      if self.params['where'] == [] and 'where' not in self.asked_category: wanting_category = 'where'
+      if self.params['who'] == [] and 'who' not in self.asked_category: wanting_category = 'who'
+      if self.params['when_time'] == [] and 'when_time' not in self.asked_category: wanting_category = 'when_time'
+      if self.params['when_day'] == [] and 'when_day' not in self.asked_category: wanting_category = 'when_day'
+      #if self.params['how_time'] == [] and 'how_time' not in self.asked_category: wanting_category = 'how_time'
     
     self.asked_category.append(wanting_category)
     return wanting_category
