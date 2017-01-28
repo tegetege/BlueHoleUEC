@@ -58,41 +58,50 @@ def one_ans(category_ans,result):
 
 
 	if category_ans == 'what':
+		print('----------')
 		print('category is what')
 		ans_what = result['what']
 		ans_title = result['title']
 		ans_when_time = result['when_time']
 		rfs(ans_what + "'" + ans_title + "'" + 'があります。' + '(' + ans_when_time + ')')
-		#Image.open.show("./img/hari.jpg").show()
+		print('----------')
 
 	elif category_ans == 'when':
+		print('----------')
 		print('category is when')
 		ans_title = result['title']
 		ans_when_day =  result['when_day']
 		ans_when_time = result['when_time']
 		rfs('title:' + str(ans_title))
 		rfs(ans_when_day + '日の' + ans_when_time + '開始です。')
+		print('----------')
 
 	elif category_ans == 'who':
+		print('----------')
 		print('category is who')
 		ans_title = result['title']
 		ans_who =  result['who']
 		rfs('title:' + str(ans_title))
 		rfs(ans_who + 'です。')
+		print('----------')
 
 	elif category_ans == 'where':
+		print('----------')
 		print('category is where')
 		ans_title = result['title']
 		ans_where =  result['where']
 		rfs('title:' + str(ans_title))
 		rfs('場所は'+ ans_where + 'です。')
+		print('----------')
 
 	elif category_ans == 'how_time':
+		print('----------')
 		print('category is how_time')
 		ans_how =  result['how_time']
 		ans_title = result['title']
 		rfs('title:' + str(ans_title))
 		rfs(ans_how + 'です。')
+		print('----------')
 
 	else:
 		print('category is why or how')
@@ -119,14 +128,15 @@ def one_ans(category_ans,result):
 			im.show()
 
 
-#複数回答候補をリスト化して表示
+#条件部分探索の複数回答候補をリスト化して表示
+#自信度でテーブルをフィルタリング
 def some_ans(category_ans,results):
 	rfs('>いくつかの回答候補が見つかりました。')
 	#解答をカウント数で管理
 	count = 0
 	for result in results:
 		#信頼度が１以上の回答のみを表示
-		if result['reliability'] > 1:
+		if result['reliability'] > 2:
 			print('----------')
 			if category_ans == 'what':
 				#print('category is what')
@@ -198,7 +208,85 @@ def some_ans(category_ans,results):
 			#解答番号をカウントアップ
 			count += 1
 
+#条件全探索の回答が複数ある時、
+#信頼度のフィルタリングをしない
+def some_ans_all(category_ans,results):
+	rfs('>いくつかの回答候補が見つかりました。')
+	#解答をカウント数で管理
+	count = 0
+	for result in results:
+		#信頼度が１以上の回答のみを表示
 
+		print('----------')
+		if category_ans == 'what':
+			#print('category is what')
+			result = result['data']
+			ans_what = result['what'] 
+			ans_title = result['title']
+			ans_when_time = result['when_time']
+			ans_where = result['where']
+			print('[' + str(count) + ']')
+			rfs(ans_what + "'" + ans_title + "'" + 'があります。' + '(' + ans_when_time + ')')
+			rfs('開催場所：' + ans_where)
+
+
+		elif category_ans == 'when':
+			#print('category is when')
+			result = result['data']
+			ans_title = result['title']
+			ans_when_day  = result['when_day']
+			ans_when_time = result['when_time']
+			ans_where  = result['where']
+			print('[' + str(count) + ']')
+			rfs('title:' + str(ans_title))
+			rfs(str(ans_when_day) + '日の' + str(ans_when_time) + '開始です。')
+			rfs('開催場所：' + ans_where)
+
+
+		elif category_ans == 'who':
+			#print('category is who')
+			result = result['data']
+			ans_title = result['title']
+			ans_name = result['who']
+			ans_when_time = result['when_time']
+			print('[' + str(count) + ']')
+			rfs('title:' + str(ans_title))
+			rfs(ans_name + 'さん。')
+
+
+		elif category_ans == 'where':
+			#print('category is where')
+			result = result['data']
+			ans_title = result['title']
+			ans_where = result['where']
+			ans_when_time = result['when_time']
+			print('[' + str(count) + ']')
+			rfs('title:' + str(ans_title))
+			rfs(ans_where + 'で行われます。')
+
+
+		elif category_ans == 'how_time':
+			#print('category is how_time')
+			result = result['data']
+			ans_title     = result['title']
+			ans_how_time = result['how_time']
+			print('[' + str(count) + ']')
+			rfs(ans_title + ':' + ans_how_time + '時間')
+
+
+		else:
+			print('category is why')
+			rfs('スタッフの方に引き継ぎます。')
+			#終了
+			record.record_A('----- conversation end   -----')
+			#履歴の表示
+			df = pandas.read_csv('conversation_log.csv')
+			print_record = df[count_row_start:]
+			print(print_record)
+			sys.exit()
+
+			#解答番号をカウントアップ
+		count += 1
 
 #情報検索部(k3)にアクセスしてDBを検索する
 #該当するタプルはリスト化して返される
@@ -263,6 +351,8 @@ def yes_or_no_some(results):
 			sys.exit()
 
 	elif u_ans == 'no':
+
+
 		rfs('>もう一度初めから開始しますか？(yes/no)')
 		#　入力
 		u_ans = input('Input: ')
@@ -294,14 +384,21 @@ def more_question(result_more):
 	elif category_ans == 'when':
 		rfs(result_more['when_day']+'日の'+result_more['when_time']+'です。')
 	
-	record.record_A('----- conversation end   -----')
-	sys.exit()
+	rfs('>もう一度初めから開始しますか？(yes/no)')
+		#　入力
+	u_ans = input('Input: ')
+	rfu(u_ans)
+	if u_ans == 'yes':
+		main_t3.start()
+	else:
+		record.record_A('----- conversation end   -----')
+		sys.exit()
 
 #信頼度が１以上のテーブルの数をカウントする
 def count_list(results):
 	count = 0
 	for result in results:
-		if result['reliability'] < 1:
+		if result['reliability'] < 2:
 			return count
 		count +=  1 
 	return count
@@ -414,7 +511,7 @@ def anser(data,category_ans,add_q_count,results,count_row_start):
 				ans_main_t3.yes_or_no_one(results)
 			#条件全探索リストが2つ~8つの時
 			elif ans_count_condition <= 8:
-				ans_main_t3.some_ans(category_ans,results)
+				ans_main_t3.some_ans_all(category_ans,results)
 				ans_main_t3.yes_or_no_some(results)
 			#条件全探索リストが8つ以上の時
 			elif ans_count_condition > 8:
@@ -442,28 +539,42 @@ def anser(data,category_ans,add_q_count,results,count_row_start):
 
 		#条件の部分探索(OR)で見つかった時の返答
 		elif result_A == 0 :
-			if len(results) == 1:
-				ans_main_t3.one_ans(category_ans,results)
-				ans_main_t3.yes_or_no_one(results)
-        
+			#信頼度の閾値を超えたリスト数が0個の場合
 			if ans_count ==0:
-				rfs('>結果が見つかりませんでした。')
-				rfs('>追加質問を生成します。')
-				#追加質問をした回数をカウントする変数へ+1
-				add_q_count += 1
-				#k3システムから"最重要キーワード"を取得してくる
-				key = k3.get_wanting_category()
-				
-				#whereの場合のみ、whatのリストに追加して情報検索部に投げる
-				if key == 'where':
-					data['what'].extend(add_q_main.make_q(key))
+				#データベースから返答されたリストが一つだった場合、信頼度に関わらず返答する
+				if len(results) == 1:
+					ans_main_t3.one_ans(category_ans,results)
+					ans_main_t3.yes_or_no_one(results)
+
 				else:
-					data[key].extend(add_q_main.make_q(key))
-			
-				rfs('----- もう一度検索します。 -----')
-				results = ans_main_t3.look_k3(data)
-			
-				ans_main_t3.anser(data,category_ans,add_q_count,results,count_row_start)
+					rfs('>結果が見つかりませんでした。')
+					rfs('>追加質問を生成します。')
+					#追加質問をした回数をカウントする変数へ+1
+					add_q_count += 1
+					#k3システムから"最重要キーワード"を取得してくる
+					key = k3.get_wanting_category()
+					
+					#whereの場合のみ、whatのリストに追加して情報検索部に投げる
+					if key == 'where':
+						data['what'].extend(add_q_main.make_q(key))
+					if key == None:
+						rfs('>検索結果が絞り込めませんでした。スタッフへ引き継ぎます')
+						rfs('>履歴を表示して、システムを終了します')
+						record.record_A('----- conversation end   -----')
+						#履歴の表示
+						df = pandas.read_csv('conversation_log.csv')
+						print_record = df[count_row_start:]
+						print(print_record)
+						sys.exit()
+
+
+					else:
+						data[key].extend(add_q_main.make_q(key))
+				
+					rfs('----- もう一度検索します。 -----')
+					results = ans_main_t3.look_k3(data)
+				
+					ans_main_t3.anser(data,category_ans,add_q_count,results,count_row_start)
 
 			elif ans_count == 1:
 				rfs('>条件の全探索では当てはまりませんでした。')
