@@ -18,6 +18,7 @@ import ans_main_t3
 import add_q_main
 import main_t3
 from k3.main import K3
+from PIL import Image
 
 
 
@@ -46,7 +47,11 @@ rfu = record.record_for_u
 #回答候補が一つの場合の応答
 def one_ans(category_ans,result):
 
-	rfs('回答候補が一つ見つかりました。')
+	reliability = result[0]['reliability']
+	if reliability < 1:
+		rfs('条件に合致するデータは見つかりませんでしたが、似たデータが一つ見つかりました。')
+	else:
+		rfs('回答候補が一つ見つかりました。')
 
 	#リストの配列から辞書を取り出す
 	result = result[0]['data']
@@ -108,6 +113,19 @@ def one_ans(category_ans,result):
 		print_record = df[count_row_start:]
 		print(print_record)
 		sys.exit()
+
+	if result['image']:
+		rfs('画像を表示します')
+		im = Image.open(result['image'])
+		im.show()
+    
+	if reliability < 1:
+		parent = k3.get_parent(result['parent_id'])
+		if parent['image']:
+			rfs('参考に親データ画像を表示します')
+			#画像の読み込み
+			im = Image.open(parent['image'])
+			im.show()
 
 
 #条件部分探索の複数回答候補をリスト化して表示
@@ -289,8 +307,8 @@ def yes_or_no_one(result):
 		u_ans2 = input('Input: ')
 		rfu(u_ans2)
 		if u_ans2 =='yes':
-			result_more = results[0]['data']
-			ans_main_t3.more_question()
+			result_more = result[0]['data']
+			ans_main_t3.more_question(result_more)
 		elif u_ans2 == 'no':
 			rfs('また、質問してくださいね！Have a nice day!')
 			record.record_A('----- conversation end   -----')
