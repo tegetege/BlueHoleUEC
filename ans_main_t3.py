@@ -113,11 +113,6 @@ def one_ans(category_ans,result):
 		print_record = df[count_row_start:]
 		print(print_record)
 		sys.exit()
-
-	if result['image']:
-		rfs('画像を表示します')
-		im = Image.open(result['image'])
-		im.show()
     
 	if reliability < 1:
 		parent = k3.get_parent(result['parent_id'])
@@ -130,13 +125,13 @@ def one_ans(category_ans,result):
 
 #条件部分探索の複数回答候補をリスト化して表示
 #自信度でテーブルをフィルタリング
-def some_ans(category_ans,results):
+def some_ans(category_ans,results,borderline):
 	rfs('>いくつかの回答候補が見つかりました。')
 	#解答をカウント数で管理
 	count = 0
 	for result in results:
-		#信頼度が１以上の回答のみを表示
-		if result['reliability'] > 2:
+		#あらかじめ設定された信頼度以上のカウントのみを表示
+		if borderline >= count:
 			print('----------')
 			if category_ans == 'what':
 				#print('category is what')
@@ -215,7 +210,6 @@ def some_ans_all(category_ans,results):
 	#解答をカウント数で管理
 	count = 0
 	for result in results:
-		#信頼度が１以上の回答のみを表示
 
 		print('----------')
 		if category_ans == 'what':
@@ -298,7 +292,11 @@ def look_k3(data):
 #ない場合は、もう一度初めからやり直す
 #yes_or_no_one:一意の返答の場合
 def yes_or_no_one(result):
-	rfs('>欲しい情報はありましたか？(yes/no)')
+	if result['image'] != None:	
+		rfs('詳細を表示します')
+		im = Image.open(result['image'])
+		im.show()
+	rfs('>欲しい情報でしたか？(yes/no)')
 	u_ans = input('Input: ')
 	rfu(u_ans)
 	if u_ans == 'yes':
@@ -327,8 +325,7 @@ def yes_or_no_one(result):
 #ユーザーに欲しい情報があるか否かを質問して、
 #ない場合は、もう一度初めからやり直す
 #yes_or_no_one:複数の返答の場合
-def yes_or_no_some(results):
-
+def yes_or_no_some(results,list_num):
 	rfs('>欲しい情報はありましたか？(yes/no)')
 	u_ans = input('Input: ')
 	rfu(u_ans)
@@ -337,21 +334,14 @@ def yes_or_no_some(results):
 		#ユーザーが欲しかった情報の回答番号を確保
 		rfs('>良かったです！何番の回答でしたか？')
 		ans_num = input('Input: ')
+		#間違った数字が入力されたときのエラー対処
+		if list_num < int(ans_num):
+			ans_num = ans_main_t3.what_num(list_num)
 		#任意の番号の回答を確保する
 		result_more = results[int(ans_num)]['data']
-		#応答について深追いの質問があるか否か(さらに、場所や時間を訪ねる時)
-		rfs('>これについて、何か質問はありますか？(yes/no)')
-		u_ans2 = input('Input: ')
-		rfu(u_ans2)
-		if u_ans2 =='yes':
-			ans_main_t3.more_question(result_more)
-		elif u_ans2 == 'no':
-			rfs('また、質問してくださいね！Have a nice day!')
-			record.record_A('----- conversation end   -----')
-			sys.exit()
+		ans_main_t3.more_question(result_more)
 
 	elif u_ans == 'no':
-
 
 		rfs('>もう一度初めから開始しますか？(yes/no)')
 		#　入力
@@ -362,37 +352,79 @@ def yes_or_no_some(results):
 		else:
 			record.record_A('----- conversation end   -----')
 			sys.exit()
+	else:
+		ans_main_t3.yes_or_no_some(results,list_num)
+
+#正しい番号が入力されるまで無限ループ
+def what_num(ans_num):
+	rfs('正しい番号を入力してください。(0 ~ ' + str(ans_num) + ')')
+	num = input('Input: ')
+	if ans_num >= int(num) :
+		return num 
+	else:
+		ans_main_t3.what_num(ans_num)
+
+#yes or noが入力されるまで無限ループ
+def more_(text):
+	rfs(text +'(yes/no)')
+	ans = input('Input: ')
+
+	if ans == 'yes|no':
+		return ans
+	else:
+		ans_main_t3.y_or_n(text)
+
 
 #ユーザーの深追い質問に対応する
 def more_question(result_more):
-	rfs('>質問は何でしょうか？')
-	#　入力
-	st = input('Input: ')
-	rfu(st)
-	category_ans = get_nlc.nlc_0(st)
-	more_category ='カテゴリー: '
-	print( more_category + category_ans)
+	im = Image.open(result_more['image'])
+	#応答について深追いの質問があるか否か(さらに、場所や時間を訪ねる時)
+	#画像が用意されている場合は表示する
+	if result_more['image'] != None:	
+		rfs('詳細を表示します')
+		im = Image.open(result_more['image'])
+		im.show()
 
-	if category_ans == 'what':
-		rfs('title:' + result_more['title'])		 
-	elif category_ans == 'who':
-		rfs(result_more['who'] + 'さんです。')
-	elif category_ans == 'where':
-		rfs(result_more['where'] + 'です。')
-	elif category_ans == 'how_time' :
-		rfs(result_more['how_time'] + '時間です。')
-	elif category_ans == 'when':
-		rfs(result_more['when_day']+'日の'+result_more['when_time']+'です。')
-	
-	rfs('>もう一度初めから開始しますか？(yes/no)')
-		#　入力
-	u_ans = input('Input: ')
-	rfu(u_ans)
-	if u_ans == 'yes':
-		main_t3.start()
-	else:
+	rfs('>これについて、何か質問はありますか？(yes/no)')
+	u_ans2 = input('Input: ')
+	rfu(u_ans2)
+	if u_ans2 =='no':
+		rfs('また、質問してくださいね！Have a nice day!')
 		record.record_A('----- conversation end   -----')
 		sys.exit()
+	elif u_ans2 == 'yes':
+		rfs('>質問は何でしょうか？')
+		#　入力
+		st = input('Input: ')
+		rfu(st)
+		category_ans = get_nlc.nlc_0(st)
+		more_category ='カテゴリー: '
+		print( more_category + category_ans)
+
+		if category_ans == 'what':
+			rfs('title:' + result_more['title'])		 
+		elif category_ans == 'who':
+			rfs(result_more['who'] + 'さんです。')
+		elif category_ans == 'where':
+			rfs(result_more['where'] + 'です。')
+		elif category_ans == 'how_time' :
+			rfs(result_more['how_time'] + 'です。')
+		elif category_ans == 'when':
+			rfs(result_more['when_day']+'日の'+result_more['when_time']+'です。')
+		
+		rfs('>もう一度初めから開始しますか？(yes/no)')
+			#　入力
+		u_ans = input('Input: ')
+		rfu(u_ans)
+		if u_ans == 'yes':
+			main_t3.start()
+		else:
+			record.record_A('----- conversation end   -----')
+			sys.exit()
+	#yesとno以外が入力されたときのエラー処理
+	else:
+		rfs('yesかnoを入力してください')
+		ans_main_t3.more_question(result_more)
 
 #信頼度が１以上のテーブルの数をカウントする
 def count_list(results):
@@ -436,8 +468,9 @@ def anser(data,category_ans,add_q_count,results,count_row_start):
 				ans_main_t3.yes_or_no_one(results)
 			#条件全探索リストが2つ~8つの時
 			elif ans_count_condition <= 8:
-				ans_main_t3.some_ans(category_ans,results)
-				ans_main_t3.yes_or_no_some(results)
+				ans_main_t3.some_ans_all(category_ans,results)
+				ans_main_t3.yes_or_no_some(results,ans_conut_condition)
+
 			#条件全探索リストが5つ以上の時
 			elif ans_count_condition > 8:
 				rfs('>追加質問の内容を加味して再検索しましたが、候補となる結果が絞りきれませんでした。')
@@ -478,8 +511,8 @@ def anser(data,category_ans,add_q_count,results,count_row_start):
 				rfs('>条件の部分探索では当てはまりました。')
 				rfs('>代わりに似たものを表示させます。')
 
-				ans_main_t3.some_ans(category_ans,results)
-				ans_main_t3.yes_or_no_some(results)
+				ans_main_t3.some_ans(category_ans,results,ans_count)
+				ans_main_t3.yes_or_no_some(results,ans_count)
 
 			#候補の数が8個以上の時
 			elif int(ans_count) > 8:
@@ -512,7 +545,7 @@ def anser(data,category_ans,add_q_count,results,count_row_start):
 			#条件全探索リストが2つ~8つの時
 			elif ans_count_condition <= 8:
 				ans_main_t3.some_ans_all(category_ans,results)
-				ans_main_t3.yes_or_no_some(results)
+				ans_main_t3.yes_or_no_some(results,ans_count_condition)
 			#条件全探索リストが8つ以上の時
 			elif ans_count_condition > 8:
 				#追加質問を行う。
@@ -588,8 +621,8 @@ def anser(data,category_ans,add_q_count,results,count_row_start):
 				rfs('>条件の全探索では当てはまりませんでした。')
 				rfs('>代わりに似たものを表示させます。')
 
-				ans_main_t3.some_ans(category_ans,results)
-				ans_main_t3.yes_or_no_some(results)
+				ans_main_t3.some_ans(category_ans,results,ans_count)
+				ans_main_t3.yes_or_no_some(results,ans_count)
 
 			#回答候補が8個以上の時
 			elif ans_count  >8:

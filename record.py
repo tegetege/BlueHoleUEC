@@ -38,7 +38,7 @@ def record_for_u(text):
 	font = open('conversation_log.csv','a')
 	font.write(st)
 	font.close()
-	print('----- ログファイルに記録しました -----')
+
 
 
 
