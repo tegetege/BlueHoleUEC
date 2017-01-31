@@ -12,6 +12,7 @@ from watson_developer_cloud import NaturalLanguageClassifierV1 as NaturalLanguag
 #5w1h1i1c_v.7:ff1c34x160-nlc-4342
 #5w1h1i1c_v.8:ff1c2bx159-nlc-4926
 #5w1h1i1c_v.9:cede31x166-nlc-1812
+#5w2h_v.10:cedd09x164-nlc-4477
 
 def nlc_0(text):
 	#NLC読み込みのためのアカウント情報
@@ -20,6 +21,6 @@ def nlc_0(text):
 	  password='YW5Yu1VBXdKh')
 #watson　ID:ff1c2bx159-nlc-4926
 	print('----- Watson NLC　からの応答待ち -----')
-	res = natural_language_classifier.classify('cede31x166-nlc-1812', text)
+	res = natural_language_classifier.classify('cedd09x164-nlc-4477', text)
 	ans = res["top_class"]
 	return ans
