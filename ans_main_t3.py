@@ -484,7 +484,7 @@ def anser(data,category_ans,add_q_count,results,count_row_start):
 			#条件全探索リストが１つの時
 			if ans_count_condition == 1:
 				ans_main_t3.one_ans(category_ans,results)
-				ans_main_t3.yes_or_no_one(results[0])
+				ans_main_t3.yes_or_no_one(results[0]['data'])
 			#条件全探索リストが2つ~8つの時
 			elif ans_count_condition <= 8:
 				ans_main_t3.some_ans_all(category_ans,results)
@@ -522,7 +522,7 @@ def anser(data,category_ans,add_q_count,results,count_row_start):
 				rfs('>代わりに似たものを表示させます。')
 
 				ans_main_t3.one_ans(category_ans,results)
-				ans_main_t3.yes_or_no_one(results[0])
+				ans_main_t3.yes_or_no_one(results[0]['data'])
 
 
 			#候補の数が8個以内の時
@@ -560,7 +560,7 @@ def anser(data,category_ans,add_q_count,results,count_row_start):
 			#条件全探索リストが１つの時
 			if ans_count_condition == 1:
 				ans_main_t3.one_ans(category_ans,results)
-				ans_main_t3.yes_or_no_one(results[0])
+				ans_main_t3.yes_or_no_one(results[0]['data'])
 			#条件全探索リストが2つ~8つの時
 			elif ans_count_condition <= 8:
 				ans_main_t3.some_ans_all(category_ans,results)
@@ -596,7 +596,7 @@ def anser(data,category_ans,add_q_count,results,count_row_start):
 				#データベースから返答されたリストが一つだった場合、信頼度に関わらず返答する
 				if len(results) == 1:
 					ans_main_t3.one_ans(category_ans,results)
-					ans_main_t3.yes_or_no_one(results[0])
+					ans_main_t3.yes_or_no_one(results[0]['data'])
 
 				else:
 					rfs('>結果が見つかりませんでした。')
@@ -633,7 +633,7 @@ def anser(data,category_ans,add_q_count,results,count_row_start):
 				rfs('>代わりに似たものを表示させます。')
 
 				ans_main_t3.one_ans(category_ans,results)
-				ans_main_t3.yes_or_no_one(results[0])
+				ans_main_t3.yes_or_no_one(results[0]['data'])
 
 			#回答候補が8個以下の時
 			elif ans_count <= 8:
