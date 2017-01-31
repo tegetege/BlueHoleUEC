@@ -270,7 +270,7 @@ def some_ans_all(category_ans,results):
 
 		else:
 			print('category is why')
-			rfs('スタッフの方に引き継ぎます。')
+			rfs('スタッフへ引き継ぎます。')
 			#終了
 			record.record_A('----- conversation end   -----')
 			#履歴の表示
@@ -292,6 +292,7 @@ def look_k3(data):
 #ない場合は、もう一度初めからやり直す
 #yes_or_no_one:一意の返答の場合
 def yes_or_no_one(result):
+
 	if result['image'] != None:	
 		rfs('詳細を表示します')
 		im = Image.open(result['image'])
@@ -305,13 +306,21 @@ def yes_or_no_one(result):
 		u_ans2 = input('Input: ')
 		rfu(u_ans2)
 		if u_ans2 =='yes':
-			result_more = result[0]['data']
+			result_more = result['data']
 			ans_main_t3.more_question(result_more)
 		elif u_ans2 == 'no':
 			rfs('また、質問してくださいね！Have a nice day!')
 			record.record_A('----- conversation end   -----')
 			sys.exit()
 	elif u_ans == 'no':
+		rfs('>スタッフへ引き継ぐために履歴を表示します。')
+		record.record_A('----- conversation end   -----')
+		#履歴の表示
+		df = pandas.read_csv('conversation_log.csv')
+		print_record = df[count_row_start:]
+		print(print_record)
+		sys.exit()
+		'''
 		rfs('>もう一度初めから開始しますか？(yes/no)')
 		#　入力
 		u_ans = input('Input: ')
@@ -321,6 +330,7 @@ def yes_or_no_one(result):
 		else:
 			record.record_A('----- conversation end   -----')
 			sys.exit()
+		'''
 
 #ユーザーに欲しい情報があるか否かを質問して、
 #ない場合は、もう一度初めからやり直す
@@ -342,7 +352,15 @@ def yes_or_no_some(results,list_num):
 		ans_main_t3.more_question(result_more)
 
 	elif u_ans == 'no':
+		rfs('>スタッフへ引き継ぐために履歴を表示します。')
+		record.record_A('----- conversation end   -----')
+		#履歴の表示
+		df = pandas.read_csv('conversation_log.csv')
+		print_record = df[count_row_start:]
+		print(print_record)
+		sys.exit()
 
+		'''
 		rfs('>もう一度初めから開始しますか？(yes/no)')
 		#　入力
 		u_ans = input('Input: ')
@@ -352,6 +370,7 @@ def yes_or_no_some(results,list_num):
 		else:
 			record.record_A('----- conversation end   -----')
 			sys.exit()
+		'''
 	else:
 		ans_main_t3.yes_or_no_some(results,list_num)
 
@@ -426,7 +445,7 @@ def more_question(result_more):
 		rfs('yesかnoを入力してください')
 		ans_main_t3.more_question(result_more)
 
-#信頼度が１以上のテーブルの数をカウントする
+#自信度が2以上のテーブルの数をカウントする
 def count_list(results):
 	count = 0
 	for result in results:
@@ -465,7 +484,7 @@ def anser(data,category_ans,add_q_count,results,count_row_start):
 			#条件全探索リストが１つの時
 			if ans_count_condition == 1:
 				ans_main_t3.one_ans(category_ans,results)
-				ans_main_t3.yes_or_no_one(results)
+				ans_main_t3.yes_or_no_one(results[0])
 			#条件全探索リストが2つ~8つの時
 			elif ans_count_condition <= 8:
 				ans_main_t3.some_ans_all(category_ans,results)
@@ -503,7 +522,7 @@ def anser(data,category_ans,add_q_count,results,count_row_start):
 				rfs('>代わりに似たものを表示させます。')
 
 				ans_main_t3.one_ans(category_ans,results)
-				ans_main_t3.yes_or_no_one(results)
+				ans_main_t3.yes_or_no_one(results[0])
 
 
 			#候補の数が8個以内の時
@@ -541,7 +560,7 @@ def anser(data,category_ans,add_q_count,results,count_row_start):
 			#条件全探索リストが１つの時
 			if ans_count_condition == 1:
 				ans_main_t3.one_ans(category_ans,results)
-				ans_main_t3.yes_or_no_one(results)
+				ans_main_t3.yes_or_no_one(results[0])
 			#条件全探索リストが2つ~8つの時
 			elif ans_count_condition <= 8:
 				ans_main_t3.some_ans_all(category_ans,results)
@@ -577,7 +596,7 @@ def anser(data,category_ans,add_q_count,results,count_row_start):
 				#データベースから返答されたリストが一つだった場合、信頼度に関わらず返答する
 				if len(results) == 1:
 					ans_main_t3.one_ans(category_ans,results)
-					ans_main_t3.yes_or_no_one(results)
+					ans_main_t3.yes_or_no_one(results[0])
 
 				else:
 					rfs('>結果が見つかりませんでした。')
@@ -614,7 +633,7 @@ def anser(data,category_ans,add_q_count,results,count_row_start):
 				rfs('>代わりに似たものを表示させます。')
 
 				ans_main_t3.one_ans(category_ans,results)
-				ans_main_t3.yes_or_no_one(results)
+				ans_main_t3.yes_or_no_one(results[0])
 
 			#回答候補が8個以下の時
 			elif ans_count <= 8:
