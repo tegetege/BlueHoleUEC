@@ -281,7 +281,7 @@ class K3:
       
     
     for idx, item in enumerate(data):
-      results_uniq.append({'data': item, 'reliability': reliabilities[idx] / len(result), 'all_and': all_and_list[idx]})
+      results_uniq.append({'data': item, 'reliability': reliabilities[idx] / len(self.search_params), 'all_and': all_and_list[idx]})
       
     results_uniq.sort(key=itemgetter('reliability'), reverse=True)
     
@@ -294,39 +294,39 @@ class K3:
     wanting_category = None
     if self.category == 'what':
       if self.params['where'] == [] and 'where' not in self.asked_category: wanting_category = 'where'
-      if self.params['who'] == [] and 'who' not in self.asked_category: wanting_category = 'who'
-      if self.params['when_time'] == [] and 'when_time' not in self.asked_category: wanting_category = 'when_time'
-      if self.params['when_day'] == [] and 'when_day' not in self.asked_category: wanting_category = 'when_day'
+      elif self.params['who'] == [] and 'who' not in self.asked_category: wanting_category = 'who'
+      elif self.params['when_time'] == [] and 'when_time' not in self.asked_category: wanting_category = 'when_time'
+      elif self.params['when_day'] == [] and 'when_day' not in self.asked_category: wanting_category = 'when_day'
       #if self.params['how_time'] == [] and 'how_time' not in self.asked_category: wanting_category = 'how_time'
     if self.category == 'when':
       if self.params['what'] == [] and 'what' not in self.asked_category: wanting_category = 'what'
-      if self.params['where'] == [] and 'where' not in self.asked_category: wanting_category = 'where'
-      if self.params['who'] == [] and 'who' not in self.asked_category: wanting_category = 'who'
+      elif self.params['where'] == [] and 'where' not in self.asked_category: wanting_category = 'where'
+      elif self.params['who'] == [] and 'who' not in self.asked_category: wanting_category = 'who'
       #if self.params['how_time'] == [] and 'how_time' not in self.asked_category: wanting_category = 'how_time'
     if self.category == 'who':
       if self.params['what'] == [] and 'what' not in self.asked_category: wanting_category = 'what'
-      if self.params['where'] == [] and 'where' not in self.asked_category: wanting_category = 'where'
-      if self.params['when_time'] == [] and 'when_time' not in self.asked_category: wanting_category = 'when_time'
-      if self.params['when_day'] == [] and 'when_day' not in self.asked_category: wanting_category = 'when_day'
+      elif self.params['where'] == [] and 'where' not in self.asked_category: wanting_category = 'where'
+      elif self.params['when_time'] == [] and 'when_time' not in self.asked_category: wanting_category = 'when_time'
+      elif self.params['when_day'] == [] and 'when_day' not in self.asked_category: wanting_category = 'when_day'
       #if self.params['how_time'] == [] and 'how_time' not in self.asked_category: wanting_category = 'how_time'
     if self.category == 'how_time':
       if self.params['what'] == [] and 'what' not in self.asked_category: wanting_category = 'what'
-      if self.params['where'] == [] and 'where' not in self.asked_category: wanting_category = 'where'
-      if self.params['who'] == [] and 'who' not in self.asked_category: wanting_category = 'who'
-      if self.params['when_time'] == [] and 'when_time' not in self.asked_category: wanting_category = 'when_time'
-      if self.params['when_day'] == [] and 'when_day' not in self.asked_category: wanting_category = 'when_day'
+      elif self.params['where'] == [] and 'where' not in self.asked_category: wanting_category = 'where'
+      elif self.params['who'] == [] and 'who' not in self.asked_category: wanting_category = 'who'
+      elif self.params['when_time'] == [] and 'when_time' not in self.asked_category: wanting_category = 'when_time'
+      elif self.params['when_day'] == [] and 'when_day' not in self.asked_category: wanting_category = 'when_day'
     if self.category == 'where':
       if self.params['what'] == [] and 'what' not in self.asked_category: wanting_category = 'what'
-      if self.params['who'] == [] and 'who' not in self.asked_category: wanting_category = 'who'
-      if self.params['when_time'] == [] and 'when_time' not in self.asked_category: wanting_category = 'when_time'
-      if self.params['when_day'] == [] and 'when_day' not in self.asked_category: wanting_category = 'when_day'
+      elif self.params['who'] == [] and 'who' not in self.asked_category: wanting_category = 'who'
+      elif self.params['when_time'] == [] and 'when_time' not in self.asked_category: wanting_category = 'when_time'
+      elif self.params['when_day'] == [] and 'when_day' not in self.asked_category: wanting_category = 'when_day'
       #if self.params['how_time'] == [] and 'how_time' not in self.asked_category: wanting_category = 'how_time'
     if self.category == 'how':
       if self.params['what'] == [] and 'what' not in self.asked_category: wanting_category = 'what'
-      if self.params['where'] == [] and 'where' not in self.asked_category: wanting_category = 'where'
-      if self.params['who'] == [] and 'who' not in self.asked_category: wanting_category = 'who'
-      if self.params['when_time'] == [] and 'when_time' not in self.asked_category: wanting_category = 'when_time'
-      if self.params['when_day'] == [] and 'when_day' not in self.asked_category: wanting_category = 'when_day'
+      elif self.params['where'] == [] and 'where' not in self.asked_category: wanting_category = 'where'
+      elif self.params['who'] == [] and 'who' not in self.asked_category: wanting_category = 'who'
+      elif self.params['when_time'] == [] and 'when_time' not in self.asked_category: wanting_category = 'when_time'
+      elif self.params['when_day'] == [] and 'when_day' not in self.asked_category: wanting_category = 'when_day'
       #if self.params['how_time'] == [] and 'how_time' not in self.asked_category: wanting_category = 'how_time'
     
     self.asked_category.append(wanting_category)
