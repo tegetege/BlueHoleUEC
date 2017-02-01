@@ -18,7 +18,7 @@ import ans_main_t3
 import add_q_main
 import main_t3
 from k3.main import K3
-from PIL import Image
+
 
 
 
@@ -210,77 +210,76 @@ def some_ans_all(category_ans,results):
 	#解答をカウント数で管理
 	count = 0
 	for result in results:
-
-		print('----------')
-		if category_ans == 'what':
-			#print('category is what')
-			result = result['data']
-			ans_what = result['what'] 
-			ans_title = result['title']
-			ans_when_time = result['when_time']
-			ans_where = result['where']
-			print('[' + str(count) + ']')
-			rfs(ans_what + "'" + ans_title + "'" + 'があります。' + '(' + ans_when_time + ')')
-			rfs('開催場所：' + ans_where)
-
-
-		elif category_ans == 'when':
-			#print('category is when')
-			result = result['data']
-			ans_title = result['title']
-			ans_when_day  = result['when_day']
-			ans_when_time = result['when_time']
-			ans_where  = result['where']
-			print('[' + str(count) + ']')
-			rfs('title:' + str(ans_title))
-			rfs(str(ans_when_day) + '日の' + str(ans_when_time) + '開始です。')
-			rfs('開催場所：' + ans_where)
-
-
-		elif category_ans == 'who':
-			#print('category is who')
-			result = result['data']
-			ans_title = result['title']
-			ans_name = result['who']
-			ans_when_time = result['when_time']
-			print('[' + str(count) + ']')
-			rfs('title:' + str(ans_title))
-			rfs(ans_name + 'さん。')
-
-
-		elif category_ans == 'where':
-			#print('category is where')
-			result = result['data']
-			ans_title = result['title']
-			ans_where = result['where']
-			ans_when_time = result['when_time']
-			print('[' + str(count) + ']')
-			rfs('title:' + str(ans_title))
-			rfs(ans_where + 'で行われます。')
-
-
-		elif category_ans == 'how_time':
-			#print('category is how_time')
-			result = result['data']
-			ans_title     = result['title']
-			ans_how_time = result['how_time']
-			print('[' + str(count) + ']')
-			rfs(ans_title + ':' + ans_how_time + '時間')
-
-
-		else:
-			print('category is why')
-			rfs('スタッフへ引き継ぎます。')
-			#終了
-			record.record_A('----- conversation end   -----')
-			#履歴の表示
-			df = pandas.read_csv('conversation_log.csv')
-			print_record = df[count_row_start:]
-			print(print_record)
-			sys.exit()
-
+		if result['all_and'] == 1:
+			print('----------')
+			if category_ans == 'what':
+				#print('category is what')
+				result = result['data']
+				ans_what = result['what'] 
+				ans_title = result['title']
+				ans_when_time = result['when_time']
+				ans_where = result['where']
+				print('[' + str(count) + ']')
+				rfs(ans_what + "'" + ans_title + "'" + 'があります。' + '(' + ans_when_time + ')')
+				rfs('開催場所：' + ans_where)
+		
+		
+			elif category_ans == 'when':
+				#print('category is when')
+				result = result['data']
+				ans_title = result['title']
+				ans_when_day  = result['when_day']
+				ans_when_time = result['when_time']
+				ans_where  = result['where']
+				print('[' + str(count) + ']')
+				rfs('title:' + str(ans_title))
+				rfs(str(ans_when_day) + '日の' + str(ans_when_time) + '開始です。')
+				rfs('開催場所：' + ans_where)
+	
+		
+			elif category_ans == 'who':
+				#print('category is who')
+				result = result['data']
+				ans_title = result['title']
+				ans_name = result['who']
+				ans_when_time = result['when_time']
+				print('[' + str(count) + ']')
+				rfs('title:' + str(ans_title))
+				rfs(ans_name + 'さん。')
+		
+		
+			elif category_ans == 'where':
+				#print('category is where')
+				result = result['data']
+				ans_title = result['title']
+				ans_where = result['where']
+				ans_when_time = result['when_time']
+				print('[' + str(count) + ']')
+				rfs('title:' + str(ans_title))
+				rfs(ans_where + 'で行われます。')
+	
+	
+			elif category_ans == 'how_time':
+				#print('category is how_time')
+				result = result['data']
+				ans_title     = result['title']
+				ans_how_time = result['how_time']
+				print('[' + str(count) + ']')
+				rfs(ans_title + ':' + ans_how_time + '時間')
+		
+		
+			else:
+				print('category is why')
+				rfs('スタッフへ引き継ぎます。')
+				#終了
+				record.record_A('----- conversation end   -----')
+				#履歴の表示
+				df = pandas.read_csv('conversation_log.csv')
+				print_record = df[count_row_start:]
+				print(print_record)
+				sys.exit()
 			#解答番号をカウントアップ
-		count += 1
+			count += 1
 
 #情報検索部(k3)にアクセスしてDBを検索する
 #該当するタプルはリスト化して返される
