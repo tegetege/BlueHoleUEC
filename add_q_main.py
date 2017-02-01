@@ -106,20 +106,21 @@ def make_q(key):
 			mecab_where = python_mecab.mecab_general_noun_get(st)
 			return mecab_where
 
-	elif key == 'how_time':
-		rfs('>key is "how_time"')
-		rfs('>そのイベントは何時間開催される予定かわかりますか？(わからない場合は"わからない"を入力)')
-		#　入力
-		st = input('Input: ')
-		rfu(st)
 
-		null_word = re.search('わからない|わかりません',st)
-		if null_word :
-			add_q_ans = 'null'
-			return [add_q_ans]
-		else:
-			mecab_where = python_mecab.mecab_general_noun_get(st)
-			return mecab_where
+#	elif key == 'how_time':
+#		rfs('>key is "how_time"')
+#		rfs('>そのイベントは何時間開催される予定かわかりますか？(わからない場合は"わからない"を入力)')
+#		#　入力
+#		st = input('Input: ')
+#		rfu(st)
+#
+#		null_word = re.search('わからない|わかりません',st)
+#		if null_word :
+#			add_q_ans = 'null'
+#			return [add_q_ans]
+#		else:
+#			#how_timeを取り出す正規表現が入る予定でした...
+#			return 
 
 	elif key == None:
 		rfs('>検索結果が絞り込めませんでした。スタッフへ引き継ぎます')
