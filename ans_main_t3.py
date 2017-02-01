@@ -1,4 +1,4 @@
-# coding: utf-8
+ # coding: utf-8
 #!/usr/bin/env python
 
 #python のバージョン指定：python 3.5.0
@@ -291,7 +291,7 @@ def look_k3(data):
 #ユーザーに欲しい情報があるか否かを質問して、
 #ない場合は、もう一度初めからやり直す
 #yes_or_no_one:一意の返答の場合
-def yes_or_no_one(result):
+def yes_or_no_one(result,count_row_start):
 
 	if result['image'] != None:	
 		rfs('詳細を表示します')
@@ -335,7 +335,7 @@ def yes_or_no_one(result):
 #ユーザーに欲しい情報があるか否かを質問して、
 #ない場合は、もう一度初めからやり直す
 #yes_or_no_one:複数の返答の場合
-def yes_or_no_some(results,list_num):
+def yes_or_no_some(results,list_num,count_row_start):
 	rfs('>欲しい情報はありましたか？(yes/no)')
 	u_ans = input('Input: ')
 	rfu(u_ans)
@@ -474,21 +474,18 @@ def anser(data,category_ans,add_q_count,results,count_row_start):
 	#追加質問を2度行った時
 	if int(add_q_count) >= 2:
 
-		#条件の全探索で見つかったものかどうかの判定	
-		result_A = results[0]['all_and']
-
 		#条件の全探索で見つかった場合
-		if result_A == 1:
+		if  res_count > 0 and result[0]['all_and'] == 1:
 			ans_count_condition = ans_main_t3.count_list_condition(results)
 			rfs('>条件の全探索で当てはまるものが見つかりました。')
 			#条件全探索リストが１つの時
 			if ans_count_condition == 1:
 				ans_main_t3.one_ans(category_ans,results)
-				ans_main_t3.yes_or_no_one(results[0]['data'])
+				ans_main_t3.yes_or_no_one(results[0]['data'],count_row_start)
 			#条件全探索リストが2つ~8つの時
 			elif ans_count_condition <= 8:
 				ans_main_t3.some_ans_all(category_ans,results)
-				ans_main_t3.yes_or_no_some(results,ans_conut_condition)
+				ans_main_t3.yes_or_no_some(results,ans_conut_condition,count_row_start)
 
 			#条件全探索リストが5つ以上の時
 			elif ans_count_condition > 8:
@@ -502,10 +499,9 @@ def anser(data,category_ans,add_q_count,results,count_row_start):
 				print(print_record)
 				sys.exit()
 
-
-			
+	
 		#条件の部分探索で見つかった場合
-		elif result_A == 0:
+		elif res_count == 0 or results[0]['all_and'] == 0:
 
 			if int(ans_count)  == 0:
 				rfs('>追加質問の内容を加味して再検索しましたが、結果が見つかりませんでした。')
@@ -522,7 +518,7 @@ def anser(data,category_ans,add_q_count,results,count_row_start):
 				rfs('>代わりに似たものを表示させます。')
 
 				ans_main_t3.one_ans(category_ans,results)
-				ans_main_t3.yes_or_no_one(results[0]['data'])
+				ans_main_t3.yes_or_no_one(results[0]['data'],count_row_start)
 
 
 			#候補の数が8個以内の時
@@ -531,7 +527,7 @@ def anser(data,category_ans,add_q_count,results,count_row_start):
 				rfs('>代わりに似たものを表示させます。')
 
 				ans_main_t3.some_ans(category_ans,results,ans_count)
-				ans_main_t3.yes_or_no_some(results,ans_count)
+				ans_main_t3.yes_or_no_some(results,ans_count,count_row_start)
 
 			#候補の数が8個以上の時
 			elif int(ans_count) > 8:
@@ -545,26 +541,21 @@ def anser(data,category_ans,add_q_count,results,count_row_start):
 				print(print_record)
 				sys.exit()
 
-
-
-
 	#追加質問をまだ行っていない時
 	else:
-		#条件の全探索で見つかったものかどうかの判定	
-		result_A = results[0]['all_and']
 
 		#条件の全探索(AND)で見つかった時の返答
-		if result_A == 1:
+		if res_count > 0 and results[0]['all_and'] == 1:
 			ans_count_condition = ans_main_t3.count_list_condition(results)
 			rfs('>条件の全探索で当てはまるものが見つかりました。')
 			#条件全探索リストが１つの時
 			if ans_count_condition == 1:
 				ans_main_t3.one_ans(category_ans,results)
-				ans_main_t3.yes_or_no_one(results[0]['data'])
+				ans_main_t3.yes_or_no_one(results[0]['data'],count_row_start)
 			#条件全探索リストが2つ~8つの時
 			elif ans_count_condition <= 8:
 				ans_main_t3.some_ans_all(category_ans,results)
-				ans_main_t3.yes_or_no_some(results,ans_count_condition)
+				ans_main_t3.yes_or_no_some(results,ans_count_condition,count_row_start)
 			#条件全探索リストが8つ以上の時
 			elif ans_count_condition > 8:
 				#追加質問を行う。
@@ -590,7 +581,7 @@ def anser(data,category_ans,add_q_count,results,count_row_start):
 
 
 		#条件の部分探索(OR)で見つかった時の返答
-		elif result_A == 0 :
+		elif res_count == 0 or results[0]['all_and'] == 0 :
 			#信頼度の閾値を超えたリスト数が0個の場合
 			if ans_count ==0:
 				#データベースから返答されたリストが一つだった場合、信頼度に関わらず返答する
@@ -633,7 +624,7 @@ def anser(data,category_ans,add_q_count,results,count_row_start):
 				rfs('>代わりに似たものを表示させます。')
 
 				ans_main_t3.one_ans(category_ans,results)
-				ans_main_t3.yes_or_no_one(results[0]['data'])
+				ans_main_t3.yes_or_no_one(results[0]['data'],count_row_start)
 
 			#回答候補が8個以下の時
 			elif ans_count <= 8:
@@ -641,7 +632,7 @@ def anser(data,category_ans,add_q_count,results,count_row_start):
 				rfs('>代わりに似たものを表示させます。')
 
 				ans_main_t3.some_ans(category_ans,results,ans_count)
-				ans_main_t3.yes_or_no_some(results,ans_count)
+				ans_main_t3.yes_or_no_some(results,ans_count,count_row_start)
 
 			#回答候補が8個以上の時
 			elif ans_count  >8:
