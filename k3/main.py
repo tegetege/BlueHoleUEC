@@ -285,7 +285,12 @@ class K3:
       
     results_uniq.sort(key=itemgetter('reliability'), reverse=True)
     
-    pprint(results_uniq)
+    for idx, item in enumerate(results_uniq):
+      if idx == 5:
+        print('（6件目以降省略）')
+        break
+      pprint(item)
+      
     return results_uniq
   
   
