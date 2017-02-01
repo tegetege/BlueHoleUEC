@@ -474,7 +474,7 @@ def anser(data,category_ans,add_q_count,results,count_row_start):
 	if int(add_q_count) >= 2:
 
 		#条件の全探索で見つかった場合
-		if  res_count > 0 and result[0]['all_and'] == 1:
+		if  res_count > 0 and results[0]['all_and'] == 1:
 			ans_count_condition = ans_main_t3.count_list_condition(results)
 			rfs('>条件の全探索で当てはまるものが見つかりました。')
 			#条件全探索リストが１つの時
