@@ -396,7 +396,6 @@ def more_(text):
 
 #ユーザーの深追い質問に対応する
 def more_question(result_more):
-	im = Image.open(result_more['image'])
 	#応答について深追いの質問があるか否か(さらに、場所や時間を訪ねる時)
 	#画像が用意されている場合は表示する
 	if result_more['image'] != None:	
