@@ -190,7 +190,7 @@ def some_ans(category_ans,results,borderline):
 
 
 			else:
-				print('category is why')
+				print('category is why or how')
 				rfs('スタッフの方に引き継ぎます。')
 				#終了
 				record.record_A('----- conversation end   -----')
@@ -205,7 +205,7 @@ def some_ans(category_ans,results,borderline):
 
 #条件全探索の回答が複数ある時、
 #信頼度のフィルタリングをしない
-def some_ans_all(category_ans,results):
+def some_ans_all(category_ans,results,count_row_start):
 	rfs('>いくつかの回答候補が見つかりました。')
 	#解答をカウント数で管理
 	count = 0
@@ -269,7 +269,7 @@ def some_ans_all(category_ans,results):
 		
 		
 			else:
-				print('category is why')
+				print('category is why or how')
 				rfs('スタッフへ引き継ぎます。')
 				#終了
 				record.record_A('----- conversation end   -----')
