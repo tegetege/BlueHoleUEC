@@ -45,7 +45,7 @@ rfs = record.record_for_s
 rfu = record.record_for_u
 
 #回答候補が一つの場合の応答
-def one_ans(category_ans,result):
+def one_ans(category_ans,result,count_row_start):
 
 	reliability = result[0]['reliability']
 	if reliability < 1:
@@ -125,7 +125,7 @@ def one_ans(category_ans,result):
 
 #条件部分探索の複数回答候補をリスト化して表示
 #自信度でテーブルをフィルタリング
-def some_ans(category_ans,results,borderline):
+def some_ans(category_ans,results,borderline,count_row_start):
 	rfs('>いくつかの回答候補が見つかりました。')
 	#解答をカウント数で管理
 	count = 0
@@ -465,7 +465,7 @@ def anser(data,category_ans,add_q_count,results,count_row_start):
 				ans_main_t3.yes_or_no_one(results[0]['data'],count_row_start)
 			#条件全探索リストが2つ~8つの時
 			elif ans_count_condition <= 8:
-				ans_main_t3.some_ans_all(category_ans,results)
+				ans_main_t3.some_ans_all(category_ans,results,count_row_start)
 				ans_main_t3.yes_or_no_some(results,ans_conut_condition,count_row_start)
 
 			#条件全探索リストが5つ以上の時
@@ -498,7 +498,7 @@ def anser(data,category_ans,add_q_count,results,count_row_start):
 				rfs('>条件の部分探索で当てはまりました。')
 				rfs('>代わりに似たものを表示させます。')
 
-				ans_main_t3.one_ans(category_ans,results)
+				ans_main_t3.one_ans(category_ans,results,count_row_start)
 				ans_main_t3.yes_or_no_one(results[0]['data'],count_row_start)
 
 
@@ -507,7 +507,7 @@ def anser(data,category_ans,add_q_count,results,count_row_start):
 				rfs('>条件の部分探索では当てはまりました。')
 				rfs('>代わりに似たものを表示させます。')
 
-				ans_main_t3.some_ans(category_ans,results,ans_count)
+				ans_main_t3.some_ans(category_ans,results,ans_count,count_row_start)
 				ans_main_t3.yes_or_no_some(results,ans_count,count_row_start)
 
 			#候補の数が8個以上の時
@@ -531,11 +531,11 @@ def anser(data,category_ans,add_q_count,results,count_row_start):
 			rfs('>条件の全探索で当てはまるものが見つかりました。')
 			#条件全探索リストが１つの時
 			if ans_count_condition == 1:
-				ans_main_t3.one_ans(category_ans,results)
+				ans_main_t3.one_ans(category_ans,results,count_row_start)
 				ans_main_t3.yes_or_no_one(results[0]['data'],count_row_start)
 			#条件全探索リストが2つ~8つの時
 			elif ans_count_condition <= 8:
-				ans_main_t3.some_ans_all(category_ans,results)
+				ans_main_t3.some_ans_all(category_ans,results,count_row_start)
 				ans_main_t3.yes_or_no_some(results,ans_count_condition,count_row_start)
 			#条件全探索リストが8つ以上の時
 			elif ans_count_condition > 8:
@@ -567,7 +567,7 @@ def anser(data,category_ans,add_q_count,results,count_row_start):
 			if ans_count ==0:
 				#データベースから返答されたリストが一つだった場合、信頼度に関わらず返答する
 				if len(results) == 1:
-					ans_main_t3.one_ans(category_ans,results)
+					ans_main_t3.one_ans(category_ans,results,count_row_start)
 					ans_main_t3.yes_or_no_one(results[0]['data'],count_row_start)
 
 				else:
@@ -604,7 +604,7 @@ def anser(data,category_ans,add_q_count,results,count_row_start):
 				rfs('>条件の全探索では当てはまりませんでした。')
 				rfs('>代わりに似たものを表示させます。')
 
-				ans_main_t3.one_ans(category_ans,results)
+				ans_main_t3.one_ans(category_ans,results,count_row_start)
 				ans_main_t3.yes_or_no_one(results[0]['data'],count_row_start)
 
 			#回答候補が8個以下の時
@@ -612,7 +612,7 @@ def anser(data,category_ans,add_q_count,results,count_row_start):
 				rfs('>条件の全探索では当てはまりませんでした。')
 				rfs('>代わりに似たものを表示させます。')
 
-				ans_main_t3.some_ans(category_ans,results,ans_count)
+				ans_main_t3.some_ans(category_ans,results,ans_count,count_row_start)
 				ans_main_t3.yes_or_no_some(results,ans_count,count_row_start)
 
 			#回答候補が8個以上の時
