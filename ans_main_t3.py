@@ -300,17 +300,9 @@ def yes_or_no_one(result,count_row_start):
 	u_ans = input('Input: ')
 	rfu(u_ans)
 	if u_ans == 'yes':
-		#システム応答について深追いの質問があるか否か(さらに、場所や時間を訪ねる時)
-		rfs('>良かったです！これについて、質問はありますか？(yes/no)')
-		u_ans2 = input('Input: ')
-		rfu(u_ans2)
-		if u_ans2 =='yes':
-			result_more = result['data']
-			ans_main_t3.more_question(result_more)
-		elif u_ans2 == 'no':
-			rfs('また、質問してくださいね！Have a nice day!')
-			record.record_A('----- conversation end   -----')
-			sys.exit()
+		result_more = result
+		ans_main_t3.more_question(result_more)
+		
 	elif u_ans == 'no':
 		rfs('>スタッフへ引き継ぐために履歴を表示します。')
 		record.record_A('----- conversation end   -----')
@@ -319,17 +311,7 @@ def yes_or_no_one(result,count_row_start):
 		print_record = df[count_row_start:]
 		print(print_record)
 		sys.exit()
-		'''
-		rfs('>もう一度初めから開始しますか？(yes/no)')
-		#　入力
-		u_ans = input('Input: ')
-		rfu(u_ans)
-		if u_ans == 'yes':
-			main_t3.start()
-		else:
-			record.record_A('----- conversation end   -----')
-			sys.exit()
-		'''
+
 
 #ユーザーに欲しい情報があるか否かを質問して、
 #ない場合は、もう一度初めからやり直す
@@ -359,6 +341,8 @@ def yes_or_no_some(results,list_num,count_row_start):
 		print(print_record)
 		sys.exit()
 
+	else:
+		ans_main_t3.yes_or_no_some(results,list_num,count_row_start)
 		'''
 		rfs('>もう一度初めから開始しますか？(yes/no)')
 		#　入力
@@ -370,8 +354,7 @@ def yes_or_no_some(results,list_num,count_row_start):
 			record.record_A('----- conversation end   -----')
 			sys.exit()
 		'''
-	else:
-		ans_main_t3.yes_or_no_some(results,list_num)
+
 
 #正しい番号が入力されるまで無限ループ
 def what_num(ans_num):
@@ -443,11 +426,11 @@ def more_question(result_more):
 		rfs('yesかnoを入力してください')
 		ans_main_t3.more_question(result_more)
 
-#自信度が2以上のテーブルの数をカウントする
+#自信値が1以上のテーブルの数をカウントする
 def count_list(results):
 	count = 0
 	for result in results:
-		if result['reliability'] < 2:
+		if result['reliability'] < 1:
 			return count
 		count +=  1 
 	return count
@@ -585,7 +568,7 @@ def anser(data,category_ans,add_q_count,results,count_row_start):
 				#データベースから返答されたリストが一つだった場合、信頼度に関わらず返答する
 				if len(results) == 1:
 					ans_main_t3.one_ans(category_ans,results)
-					ans_main_t3.yes_or_no_one(results[0]['data'])
+					ans_main_t3.yes_or_no_one(results[0]['data'],count_row_start)
 
 				else:
 					rfs('>結果が見つかりませんでした。')
