@@ -419,6 +419,7 @@ def more_question(result_more):
 		if u_ans == 'yes':
 			main_t3.start()
 		else:
+			rfs('また、質問してくださいね！Have a nice day!')
 			record.record_A('----- conversation end   -----')
 			sys.exit()
 	#yesとno以外が入力されたときのエラー処理
@@ -458,13 +459,14 @@ def anser(data,category_ans,add_q_count,results,count_row_start):
 		#条件の全探索で見つかった場合
 		if  res_count > 0 and results[0]['all_and'] == 1:
 			ans_count_condition = ans_main_t3.count_list_condition(results)
-			rfs('>条件の全探索で当てはまるものが見つかりました。')
 			#条件全探索リストが１つの時
 			if ans_count_condition == 1:
+				rfs('>条件の全探索で当てはまるものが一件見つかりました。')
 				ans_main_t3.one_ans(category_ans,results)
 				ans_main_t3.yes_or_no_one(results[0]['data'],count_row_start)
 			#条件全探索リストが2つ~8つの時
 			elif ans_count_condition <= 8:
+				rfs('>条件の全探索で当てはまるものが複数見つかりました。')
 				ans_main_t3.some_ans_all(category_ans,results,count_row_start)
 				ans_main_t3.yes_or_no_some(results,ans_conut_condition,count_row_start)
 
@@ -528,13 +530,14 @@ def anser(data,category_ans,add_q_count,results,count_row_start):
 		#条件の全探索(AND)で見つかった時の返答
 		if res_count > 0 and results[0]['all_and'] == 1:
 			ans_count_condition = ans_main_t3.count_list_condition(results)
-			rfs('>条件の全探索で当てはまるものが見つかりました。')
 			#条件全探索リストが１つの時
 			if ans_count_condition == 1:
+				rfs('>条件の全探索で当てはまるものが一件見つかりました。')
 				ans_main_t3.one_ans(category_ans,results,count_row_start)
 				ans_main_t3.yes_or_no_one(results[0]['data'],count_row_start)
 			#条件全探索リストが2つ~8つの時
 			elif ans_count_condition <= 8:
+				rfs('>条件の全探索で当てはまるものが複数見つかりました。')
 				ans_main_t3.some_ans_all(category_ans,results,count_row_start)
 				ans_main_t3.yes_or_no_some(results,ans_count_condition,count_row_start)
 			#条件全探索リストが8つ以上の時
