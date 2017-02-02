@@ -144,15 +144,20 @@ class K3:
       
       
     for key, values in self.params.items():
-      for value in values:
+      idx = 0
+      while idx < len(values):
+        value = values[idx]
         if key == 'what':
           guessed_key = self.__guess_key(value)
           item = {'key': guessed_key, 'value': value}
           if guessed_key != 'what':
             self.params[guessed_key].append(value)
             self.params['what'].remove(value)
+          else:
+            idx += 1;
         else:
           item = {'key': key, 'value': value}
+          idx += 1;
         if item not in self.search_params: self.search_params.append(item)
       
     if 'category' in params:
@@ -270,14 +275,24 @@ class K3:
     reliabilities = []
     all_and_list = []
     for result in results:
+      add_ok = True
+      for param in self.params[self.category]:
+        if result['data'][self.category] and param in result['data'][self.category]:
+          add_ok = False
+          break
       if result['data'] not in data:
         data.append(result['data'])
-        reliabilities.append(result['count'])
-        all_and_list.append(result['all_and'])
+        if add_ok:
+          reliabilities.append(result['count'])
+          all_and_list.append(result['all_and'])
+        else:
+          reliabilities.append(0)
+          all_and_list.append(0)
       else:
         idx = data.index(result['data'])
-        reliabilities[idx] += result['count']
-        all_and_list[idx] += result['all_and']
+        if add_ok:
+          reliabilities[idx] += result['count']
+          all_and_list[idx] += result['all_and']
       
     
     for idx, item in enumerate(data):
