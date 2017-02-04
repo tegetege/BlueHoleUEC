@@ -113,15 +113,18 @@ def one_ans(category_ans,result,count_row_start):
 		print_record = df[count_row_start:]
 		print(print_record)
 		sys.exit()
-    
+	
 	if reliability < 1:
-		parent = k3.get_parent(result['parent_id'])
-		if parent['image']:
-			rfs('>参考に親データ画像を表示します')
-			#画像の読み込み
-			im = Image.open(parent['image'])
-			im.show()
+		if result['parent_id'] != None:
+			parent = k3.get_parent(result['parent_id'])
+			if parent['image']:
+				rfs('>参考に親データ画像を表示します')
+				#画像の読み込み
+				im = Image.open(parent['image'])
+				im.show()
+	
 
+	
 
 #条件部分探索の複数回答候補をリスト化して表示
 #自信度でテーブルをフィルタリング
