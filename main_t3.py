@@ -74,6 +74,16 @@ def start():
 	print( category + category_ans)
 	data['category']=category_ans
 
+	if data['category'] == 'why' or data['category'] == 'how':
+		print('>category is why or how')
+		rfs('>スタッフの方に引き継ぎます。')
+		#終了
+		record.record_A('----- conversation end   -----')
+		#履歴の表示
+		df = pandas.read_csv('conversation_log.csv')
+		print_record = df[count_row_start:]
+		print(print_record)
+		sys.exit()
 
 	#一般(固有)名詞の取得
 	#python_mecab.pyのmecab関数を利用
