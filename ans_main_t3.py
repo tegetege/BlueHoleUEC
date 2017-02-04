@@ -49,9 +49,9 @@ def one_ans(category_ans,result,count_row_start):
 
 	reliability = result[0]['reliability']
 	if reliability < 1:
-		rfs('条件に合致するデータは見つかりませんでしたが、似たデータが一つ見つかりました。')
+		rfs('>条件に合致するデータは見つかりませんでしたが、似たデータが一つ見つかりました。')
 	else:
-		rfs('回答候補が一つ見つかりました。')
+		rfs('>回答候補が一つ見つかりました。')
 
 	#リストの配列から辞書を取り出す
 	result = result[0]['data']
@@ -63,7 +63,7 @@ def one_ans(category_ans,result,count_row_start):
 		ans_what = result['what']
 		ans_title = result['title']
 		ans_when_time = result['when_time']
-		rfs(ans_what + "'" + ans_title + "'" + 'があります。' + '(' + ans_when_time + ')')
+		rfs(">" + ans_what + "'" + ans_title + "'" + 'があります。' + '(' + ans_when_time + ')')
 		print('----------')
 
 	elif category_ans == 'when':
@@ -72,8 +72,8 @@ def one_ans(category_ans,result,count_row_start):
 		ans_title = result['title']
 		ans_when_day =  result['when_day']
 		ans_when_time = result['when_time']
-		rfs('title:' + str(ans_title))
-		rfs(ans_when_day + '日の' + ans_when_time + '開始です。')
+		rfs('>title:' + str(ans_title))
+		rfs(">" +ans_when_day + '日の' + ans_when_time + '開始です。')
 		print('----------')
 
 	elif category_ans == 'who':
@@ -81,8 +81,8 @@ def one_ans(category_ans,result,count_row_start):
 		print('category is who')
 		ans_title = result['title']
 		ans_who =  result['who']
-		rfs('title:' + str(ans_title))
-		rfs(ans_who + 'です。')
+		rfs('>title:' + str(ans_title))
+		rfs(">" +ans_who + 'です。')
 		print('----------')
 
 	elif category_ans == 'where':
@@ -90,8 +90,8 @@ def one_ans(category_ans,result,count_row_start):
 		print('category is where')
 		ans_title = result['title']
 		ans_where =  result['where']
-		rfs('title:' + str(ans_title))
-		rfs('場所は'+ ans_where + 'です。')
+		rfs('>title:' + str(ans_title))
+		rfs('>場所は'+ ans_where + 'です。')
 		print('----------')
 
 	elif category_ans == 'how_time':
@@ -99,13 +99,13 @@ def one_ans(category_ans,result,count_row_start):
 		print('category is how_time')
 		ans_how =  result['how_time']
 		ans_title = result['title']
-		rfs('title:' + str(ans_title))
-		rfs(ans_how + 'です。')
+		rfs('>title:' + str(ans_title))
+		rfs(">" +ans_how + 'です。')
 		print('----------')
 
 	else:
-		print('category is why or how')
-		rfs('スタッフの方に引き継ぎます。')
+		print('>category is why or how')
+		rfs('>スタッフの方に引き継ぎます。')
 		#終了
 		record.record_A('----- conversation end   -----')
 		#履歴の表示
@@ -117,7 +117,7 @@ def one_ans(category_ans,result,count_row_start):
 	if reliability < 1:
 		parent = k3.get_parent(result['parent_id'])
 		if parent['image']:
-			rfs('参考に親データ画像を表示します')
+			rfs('>参考に親データ画像を表示します')
 			#画像の読み込み
 			im = Image.open(parent['image'])
 			im.show()
@@ -202,6 +202,7 @@ def some_ans(category_ans,results,borderline,count_row_start):
 
 			#解答番号をカウントアップ
 			count += 1
+	print('----------')
 
 #条件全探索の回答が複数ある時、
 #信頼度のフィルタリングをしない
@@ -280,6 +281,7 @@ def some_ans_all(category_ans,results,count_row_start):
 				sys.exit()
 			#解答番号をカウントアップ
 			count += 1
+	print('----------')
 
 #情報検索部(k3)にアクセスしてDBを検索する
 #該当するタプルはリスト化して返される
@@ -293,7 +295,7 @@ def look_k3(data):
 def yes_or_no_one(result,count_row_start):
 
 	if result['image'] != None:	
-		rfs('詳細を表示します')
+		rfs('>詳細を表示します')
 		im = Image.open(result['image'])
 		im.show()
 	rfs('>欲しい情報でしたか？(yes/no)')
@@ -358,7 +360,7 @@ def yes_or_no_some(results,list_num,count_row_start):
 
 #正しい番号が入力されるまで無限ループ
 def what_num(ans_num):
-	rfs('正しい番号を入力してください。(0 ~ ' + str(ans_num) + ')')
+	rfs('>正しい番号を入力してください。(0 ~ ' + str(ans_num) + ')')
 	num = input('Input: ')
 	if ans_num >= int(num) :
 		return num 
@@ -367,7 +369,7 @@ def what_num(ans_num):
 
 #yes or noが入力されるまで無限ループ
 def more_(text):
-	rfs(text +'(yes/no)')
+	rfs(">" + text +'(yes/no)')
 	ans = input('Input: ')
 
 	if ans == 'yes|no':
@@ -389,7 +391,7 @@ def more_question(result_more):
 	u_ans2 = input('Input: ')
 	rfu(u_ans2)
 	if u_ans2 =='no':
-		rfs('また、質問してくださいね！Have a nice day!')
+		rfs('>また、質問してくださいね！Have a nice day!')
 		record.record_A('----- conversation end   -----')
 		sys.exit()
 	elif u_ans2 == 'yes':
@@ -402,15 +404,15 @@ def more_question(result_more):
 		print( more_category + category_ans)
 
 		if category_ans == 'what':
-			rfs('title:' + result_more['title'])		 
+			rfs('>title:' + result_more['title'])		 
 		elif category_ans == 'who':
-			rfs(result_more['who'] + 'さんです。')
+			rfs(">" + result_more['who'] + 'さんです。')
 		elif category_ans == 'where':
-			rfs(result_more['where'] + 'です。')
+			rfs(">" + result_more['where'] + 'です。')
 		elif category_ans == 'how_time' :
-			rfs(result_more['how_time'] + 'です。')
+			rfs(">" + result_more['how_time'] + 'です。')
 		elif category_ans == 'when':
-			rfs(result_more['when_day']+'日の'+result_more['when_time']+'です。')
+			rfs(">" + result_more['when_day']+'日の'+result_more['when_time']+'です。')
 		
 		rfs('>もう一度初めから開始しますか？(yes/no)')
 			#　入力
@@ -419,12 +421,12 @@ def more_question(result_more):
 		if u_ans == 'yes':
 			main_t3.start()
 		else:
-			rfs('また、質問してくださいね！Have a nice day!')
+			rfs('>また、質問してくださいね！Have a nice day!')
 			record.record_A('----- conversation end   -----')
 			sys.exit()
 	#yesとno以外が入力されたときのエラー処理
 	else:
-		rfs('yesかnoを入力してください')
+		rfs('>yesかnoを入力してください')
 		ans_main_t3.more_question(result_more)
 
 #自信値が1以上のテーブルの数をカウントする
