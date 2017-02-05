@@ -276,10 +276,20 @@ class K3:
     all_and_list = []
     for result in results:
       add_ok = True
-      for param in self.params[self.category]:
-        if result['data'][self.category] and param in result['data'][self.category]:
-          add_ok = False
-          break
+      if self.category == 'when':
+        for param in self.params['when_day']:
+          if result['data']['when_day'] and param in result['data']['when_day']:
+            add_ok = False
+            break
+        for param in self.params['when_time']:
+          if result['data']['when_time'] and param in result['data']['when_time']:
+            add_ok = False
+            break
+      else:
+        for param in self.params[self.category]:
+          if result['data'][self.category] and param in result['data'][self.category]:
+            add_ok = False
+            break
       if result['data'] not in data:
         data.append(result['data'])
         if add_ok:
