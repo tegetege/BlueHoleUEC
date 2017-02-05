@@ -23,6 +23,8 @@ import main_t3
 import ans_main_t3
 from k3.main import K3
 
+rfu = record.record_for_u
+
 def start():
 	#日付の指定
 	today = 25
@@ -31,31 +33,20 @@ def start():
 
 	#前回までの行数を把握しておく
 	r_read = record.record_read()
-	count_row_start = 0
-	for row in r_read:
+	count_row_start = -1
+	for row in r_read :
 		count_row_start +=  1 
+
+
+
 
 	print('>質問は何でしょうか？')
 	#　入力
 	st = input('Input: ')
-
-	'''
-	#履歴の表示
-	get_record = re.search('履歴', st)
-	if get_record :
-		record.record_A('----- conversation end   -----')
-		r_read = record.record_read()
-		for row in r_read:
-			print('\n'.join(row))
-		sys.exit()
-	'''
-
-	#履歴の表示
-
 	
 	#履歴(ユーザー)の作成
 	#引数'u'はユーザー入力を示す
-	record.record_for_u(st)
+	rfu(st)
 
 
 	#データを格納する辞書の作成

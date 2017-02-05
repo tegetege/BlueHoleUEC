@@ -13,7 +13,7 @@ import csv
 
 #開始&終了フラグの書き込み
 def record_A(text):
-	st = text +','+''+ '\n'
+	st = text +','+'-'+ '\n'
 	#テキストモードでファイルをオープンo-punn
 	font = open('conversation_log.csv','a')
 	font.write(st)
@@ -51,7 +51,10 @@ def record_read():
 	record_csv_open = open('conversation_log.csv', 'r')
 	dataReader = csv.reader(record_csv_open)
 	return dataReader
+	#これではファイルが閉じられていない
 	record_csv_open.close()
+
+
 
 
 
