@@ -109,7 +109,7 @@ def one_ans(category_ans,result,count_row_start):
 		#終了
 		record.record_A('----- conversation end   -----')
 		#履歴の表示
-		df = pandas.read_csv('conversation_log.csv')
+		df = pandas.read_csv('conversation_log.csv', header = None)
 		print_record = df[count_row_start:]
 		print(print_record)
 		sys.exit()
@@ -126,7 +126,7 @@ def one_ans(category_ans,result,count_row_start):
 
 	
 
-#条件部分探索の複数回答候補をリスト化して表示
+#条件部分検索の複数回答候補をリスト化して表示
 #自信度でテーブルをフィルタリング
 def some_ans(category_ans,results,borderline,count_row_start):
 	rfs('>いくつかの回答候補が見つかりました。')
@@ -198,7 +198,7 @@ def some_ans(category_ans,results,borderline,count_row_start):
 				#終了
 				record.record_A('----- conversation end   -----')
 				#履歴の表示
-				df = pandas.read_csv('conversation_log.csv')
+				df = pandas.read_csv('conversation_log.csv', header = None)
 				print_record = df[count_row_start:]
 				print(print_record)
 				sys.exit()
@@ -207,7 +207,7 @@ def some_ans(category_ans,results,borderline,count_row_start):
 			count += 1
 	print('----------')
 
-#条件全探索の回答が複数ある時、
+#条件全検索の回答が複数ある時、
 #信頼度のフィルタリングをしない
 def some_ans_all(category_ans,results,count_row_start):
 	rfs('>いくつかの回答候補が見つかりました。')
@@ -276,7 +276,7 @@ def some_ans_all(category_ans,results,count_row_start):
 				print('category is why or how')
 				rfs('スタッフへ引き継ぎます。')
 				#終了
-				record.record_A('----- conversation end   -----')
+				record.record_A('----- conversation end   -----',header = None)
 				#履歴の表示
 				df = pandas.read_csv('conversation_log.csv')
 				print_record = df[count_row_start:]
@@ -312,7 +312,7 @@ def yes_or_no_one(result,count_row_start):
 		rfs('>スタッフへ引き継ぐために履歴を表示します。')
 		record.record_A('----- conversation end   -----')
 		#履歴の表示
-		df = pandas.read_csv('conversation_log.csv')
+		df = pandas.read_csv('conversation_log.csv',header = None)
 		print_record = df[count_row_start:]
 		print(print_record)
 		sys.exit()
@@ -341,7 +341,7 @@ def yes_or_no_some(results,list_num,count_row_start):
 		rfs('>スタッフへ引き継ぐために履歴を表示します。')
 		record.record_A('----- conversation end   -----')
 		#履歴の表示
-		df = pandas.read_csv('conversation_log.csv')
+		df = pandas.read_csv('conversation_log.csv', header = None)
 		print_record = df[count_row_start:]
 		print(print_record)
 		sys.exit()
@@ -441,7 +441,7 @@ def count_list(results):
 		count +=  1 
 	return count
 
-#回答候補の中の条件全探索のテーブル数をカウントする
+#回答候補の中の条件全検索のテーブル数をカウントする
 def count_list_condition(results):
 	count = 0
 	for result in results:
@@ -461,34 +461,34 @@ def anser(data,category_ans,add_q_count,results,count_row_start):
 	#追加質問を2度行った時
 	if int(add_q_count) >= 2:
 
-		#条件の全探索で見つかった場合
+		#条件の全検索で見つかった場合
 		if  res_count > 0 and results[0]['all_and'] == 1:
 			ans_count_condition = ans_main_t3.count_list_condition(results)
-			#条件全探索リストが１つの時
+			#条件全検索リストが１つの時
 			if ans_count_condition == 1:
-				rfs('>条件の全探索で当てはまるものが一件見つかりました。')
+				rfs('>条件の全検索で当てはまるものが一件見つかりました。')
 				ans_main_t3.one_ans(category_ans,results)
 				ans_main_t3.yes_or_no_one(results[0]['data'],count_row_start)
-			#条件全探索リストが2つ~8つの時
+			#条件全検索リストが2つ~8つの時
 			elif ans_count_condition <= 8:
-				rfs('>条件の全探索で当てはまるものが複数見つかりました。')
+				rfs('>条件の全検索で当てはまるものが複数見つかりました。')
 				ans_main_t3.some_ans_all(category_ans,results,count_row_start)
 				ans_main_t3.yes_or_no_some(results,ans_conut_condition,count_row_start)
 
-			#条件全探索リストが5つ以上の時
+			#条件全検索リストが5つ以上の時
 			elif ans_count_condition > 8:
 				rfs('>追加質問の内容を加味して再検索しましたが、候補となる結果が絞りきれませんでした。')
 				rfs('>スタッフにひきつぐために履歴表示をします。')
 				#終了
 				record.record_A('----- conversation end   -----')
 				#履歴の表示
-				df = pandas.read_csv('conversation_log.csv')
+				df = pandas.read_csv('conversation_log.csv',header = None)
 				print_record = df[count_row_start:]
 				print(print_record)
 				sys.exit()
 
 	
-		#条件の部分探索で見つかった場合
+		#条件の部分検索で見つかった場合
 		elif res_count == 0 or results[0]['all_and'] == 0:
 
 			if int(ans_count)  == 0:
@@ -496,13 +496,13 @@ def anser(data,category_ans,add_q_count,results,count_row_start):
 				rfs('>スタッフに引き継ぐために履歴表示をします。')
 				#終了
 				record.record_A('----- conversation end   -----')
-				df = pandas.read_csv('conversation_log.csv')
+				df = pandas.read_csv('conversation_log.csv',header = None)
 				print_record = df[count_row_start:]
 				print(print_record)
 				sys.exit()
 
 			elif int(ans_count) == 1:
-				rfs('>条件の部分探索で当てはまりました。')
+				rfs('>条件の部分検索で当てはまりました。')
 				rfs('>代わりに似たものを表示させます。')
 
 				ans_main_t3.one_ans(category_ans,results,count_row_start)
@@ -511,7 +511,7 @@ def anser(data,category_ans,add_q_count,results,count_row_start):
 
 			#候補の数が8個以内の時
 			elif int(ans_count) <= 8:
-				rfs('>条件の部分探索では当てはまりました。')
+				rfs('>条件の部分検索では当てはまりました。')
 				rfs('>代わりに似たものを表示させます。')
 
 				ans_main_t3.some_ans(category_ans,results,ans_count,count_row_start)
@@ -524,7 +524,7 @@ def anser(data,category_ans,add_q_count,results,count_row_start):
 				#終了
 				record.record_A('----- conversation end   -----')
 				#履歴の表示
-				df = pandas.read_csv('conversation_log.csv')
+				df = pandas.read_csv('conversation_log.csv',header = None)
 				print_record = df[count_row_start:]
 				print(print_record)
 				sys.exit()
@@ -532,20 +532,20 @@ def anser(data,category_ans,add_q_count,results,count_row_start):
 	#追加質問をまだ行っていない時
 	else:
 
-		#条件の全探索(AND)で見つかった時の返答
+		#条件の全検索(AND)で見つかった時の返答
 		if res_count > 0 and results[0]['all_and'] == 1:
 			ans_count_condition = ans_main_t3.count_list_condition(results)
-			#条件全探索リストが１つの時
+			#条件全検索リストが１つの時
 			if ans_count_condition == 1:
-				rfs('>条件の全探索で当てはまるものが一件見つかりました。')
+				rfs('>条件の全検索で当てはまるものが一件見つかりました。')
 				ans_main_t3.one_ans(category_ans,results,count_row_start)
 				ans_main_t3.yes_or_no_one(results[0]['data'],count_row_start)
-			#条件全探索リストが2つ~8つの時
+			#条件全検索リストが2つ~8つの時
 			elif ans_count_condition <= 8:
-				rfs('>条件の全探索で当てはまるものが複数見つかりました。')
+				rfs('>条件の全検索で当てはまるものが複数見つかりました。')
 				ans_main_t3.some_ans_all(category_ans,results,count_row_start)
 				ans_main_t3.yes_or_no_some(results,ans_count_condition,count_row_start)
-			#条件全探索リストが8つ以上の時
+			#条件全検索リストが8つ以上の時
 			elif ans_count_condition > 8:
 				#追加質問を行う。
 				rfs('>大量の回答候補が見つかりました。')
@@ -569,7 +569,7 @@ def anser(data,category_ans,add_q_count,results,count_row_start):
 
 
 
-		#条件の部分探索(OR)で見つかった時の返答
+		#条件の部分検索(OR)で見つかった時の返答
 		elif res_count == 0 or results[0]['all_and'] == 0 :
 			#信頼度の閾値を超えたリスト数が0個の場合
 			if ans_count ==0:
@@ -594,7 +594,7 @@ def anser(data,category_ans,add_q_count,results,count_row_start):
 						rfs('>履歴を表示して、システムを終了します')
 						record.record_A('----- conversation end   -----')
 						#履歴の表示
-						df = pandas.read_csv('conversation_log.csv')
+						df = pandas.read_csv('conversation_log.csv',header = None)
 						print_record = df[count_row_start:]
 						print(print_record)
 						sys.exit()
@@ -609,7 +609,7 @@ def anser(data,category_ans,add_q_count,results,count_row_start):
 					ans_main_t3.anser(data,category_ans,add_q_count,results,count_row_start)
 
 			elif ans_count == 1:
-				rfs('>条件の全探索では当てはまりませんでした。')
+				rfs('>条件の全検索では当てはまりませんでした。')
 				rfs('>代わりに似たものを表示させます。')
 
 				ans_main_t3.one_ans(category_ans,results,count_row_start)
@@ -617,7 +617,7 @@ def anser(data,category_ans,add_q_count,results,count_row_start):
 
 			#回答候補が8個以下の時
 			elif ans_count <= 8:
-				rfs('>条件の全探索では当てはまりませんでした。')
+				rfs('>条件の全検索では当てはまりませんでした。')
 				rfs('>代わりに似たものを表示させます。')
 
 				ans_main_t3.some_ans(category_ans,results,ans_count,count_row_start)
