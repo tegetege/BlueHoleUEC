@@ -20,6 +20,7 @@ def nlc_0(text):
 	  #username='f36f2174-aae0-40a0-8b8c-6d138726727d',
 	  #password='YW5Yu1VBXdKh'
 	  #新たに、アカウント作成必要
+
 	  )
 #watson　ID:ff1c2bx159-nlc-4926
 	print('----- Watson NLC　からの応答待ち -----')
